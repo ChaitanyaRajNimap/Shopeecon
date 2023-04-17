@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "587857967743",
+    "project_id": "shopeecon-e90be",
+    "storage_bucket": "shopeecon-e90be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587857967743:android:83f8bdabc4c7fc37b3dd4a",
+        "android_client_info": {
+          "package_name": "com.shopeecon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587857967743-dmv6nrag0045bidn3m30dv069tlvcq4q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shopeecon",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "587857967743-790ormv3g578lfd5gs0205rc5d0gg2a5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHdVL7OR2iuqNiBfTrhho9G3zBKDIFnBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587857967743-790ormv3g578lfd5gs0205rc5d0gg2a5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "587857967743-b3qdv27tp45j0u2u944qamdb02mf0579.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Shopeecon"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
