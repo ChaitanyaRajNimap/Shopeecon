@@ -8,13 +8,14 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
-  Button,
+  Alert,
 } from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../constants/Theme';
 import validate from '../constants/Validation';
 import AppTextInput from '../components/AppTextInput';
 import PasswordTextInput from '../components/PasswordTextInput';
 import AppButton from '../components/AppButton';
+import auth from '@react-native-firebase/auth';
 
 const SignUpScreen = ({navigation, onSignUp}) => {
   const [inputs, setInputs] = useState({
@@ -45,7 +46,7 @@ const SignUpScreen = ({navigation, onSignUp}) => {
   const passwordInputRef = createRef();
   const confirmPasswordInputRef = createRef();
 
-  const handleSubmit = () => {
+  const handleSignUp = async () => {
     let fNameErr = validate.validateName(inputs.fNameInput);
     let lNameErr = validate.validateName(inputs.lNameInput);
     let emailErr = validate.validateEmail(inputs.emailInput);
@@ -56,45 +57,67 @@ const SignUpScreen = ({navigation, onSignUp}) => {
       inputs.passwordInput,
     );
 
-    if (
-      !fNameErr &&
-      !lNameErr &&
-      !emailErr &&
-      !phoneNoErr &&
-      !passwordErr &&
-      !confirmPasswordErr
-    ) {
-      setInputs({
-        ...inputs,
-        fNameInput: null,
-        lNameInput: null,
-        emailInput: null,
-        phoneNoInput: null,
-        passwordInput: null,
-        confirmPasswordInput: null,
-      });
-      setError({
-        ...error,
-        fNameError: '',
-        lNameError: '',
-        emailError: '',
-        phoneNoError: '',
-        passwordError: '',
-        confirmPasswordError: '',
-      });
-      console.log('DATA TO SUBMIT DATA ====> ', inputs);
-      console.log('DATA TO SUBMIT ERROR ====> ', error);
-      // onSignUp();
-    } else {
-      setError({
-        ...error,
-        fNameError: fNameErr,
-        lNameError: lNameErr,
-        emailError: emailErr,
-        phoneNoError: phoneNoErr,
-        passwordError: passwordErr,
-        confirmPasswordError: confirmPasswordErr,
-      });
+    try {
+      if (
+        !fNameErr &&
+        !lNameErr &&
+        !emailErr &&
+        !phoneNoErr &&
+        !passwordErr &&
+        !confirmPasswordErr
+      ) {
+        const isUserCreated = await auth().createUserWithEmailAndPassword(
+          inputs.emailInput,
+          inputs.passwordInput,
+        );
+        if (isUserCreated) {
+          console.log('isUserCreated : ', isUserCreated);
+          navigation.navigate('SignIn');
+        }
+        setInputs({
+          ...inputs,
+          fNameInput: null,
+          lNameInput: null,
+          emailInput: null,
+          phoneNoInput: null,
+          passwordInput: null,
+          confirmPasswordInput: null,
+        });
+        setError({
+          ...error,
+          fNameError: '',
+          lNameError: '',
+          emailError: '',
+          phoneNoError: '',
+          passwordError: '',
+          confirmPasswordError: '',
+        });
+
+        // onSignUp();
+      } else {
+        setError({
+          ...error,
+          fNameError: fNameErr,
+          lNameError: lNameErr,
+          emailError: emailErr,
+          phoneNoError: phoneNoErr,
+          passwordError: passwordErr,
+          confirmPasswordError: confirmPasswordErr,
+        });
+      }
+    } catch (err) {
+      console.log('Error in Sign UP : ', err.message);
+      if (
+        err.message ==
+        '[auth/email-already-in-use] The email address is already in use by another account.'
+      ) {
+        Alert.alert(
+          'User Exist!',
+          'User with given email id already exists, Please select another email id for sign up or sign up with existing account.',
+        );
+      } else {
+        Alert.alert('Alert!', err.message);
+      }
     }
   };
 
@@ -235,7 +258,7 @@ const SignUpScreen = ({navigation, onSignUp}) => {
                 {error.confirmPasswordError}
               </Text>
             </View>
-            <AppButton title="Sign Up" onPress={handleSubmit} />
+            <AppButton title="Sign Up" onPress={handleSignUp} />
           </KeyboardAvoidingView>
           <View style={styles.textContainerStyle}>
             <Text>Already a member? </Text>

@@ -8,12 +8,14 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../constants/Theme';
 import validate from '../constants/Validation';
 import AppTextInput from '../components/AppTextInput';
 import PasswordTextInput from '../components/PasswordTextInput';
 import AppButton from '../components/AppButton';
+import auth from '@react-native-firebase/auth';
 
 const SignInScreen = ({navigation, onSignIn}) => {
   const [inputs, setInputs] = useState({
@@ -30,18 +32,29 @@ const SignInScreen = ({navigation, onSignIn}) => {
   const emailInputRef = createRef();
   const passwordRef = createRef();
 
-  const handleSubmit = () => {
+  const handleSignIn = async () => {
     let emailErr = validate.validateEmail(inputs.emailInput);
     let passwordErr = validate.validatePassword(inputs.passwordInput);
 
-    if (!emailErr && !passwordErr) {
-      setInputs({...inputs, emailInput: null, passwordInput: null});
-      setError({...error, emailError: '', passwordError: ''});
-      console.log('DATA TO SUBMIT DATA ====> ', inputs);
-      console.log('DATA TO SUBMIT ERROR ====> ', error);
-      // onSignIn();
-    } else {
-      setError({...error, emailError: emailErr, passwordError: passwordErr});
+    try {
+      if (!emailErr && !passwordErr) {
+        const isUserSignIn = await auth().signInWithEmailAndPassword(
+          inputs.emailInput,
+          inputs.passwordInput,
+        );
+        if (isUserSignIn) {
+          console.log('isUserSignIn : ', isUserSignIn);
+          setInputs({...inputs, emailInput: null, passwordInput: null});
+          setError({...error, emailError: '', passwordError: ''});
+        }
+
+        // onSignIn();
+      } else {
+        setError({...error, emailError: emailErr, passwordError: passwordErr});
+      }
+    } catch (err) {
+      console.log('Error in Sign IN : ', err.message);
+      Alert.alert('Alert!', err.message);
     }
   };
 
@@ -99,7 +112,7 @@ const SignInScreen = ({navigation, onSignIn}) => {
               />
               <Text style={styles.errorTextStyle}>{error.passwordError}</Text>
             </View>
-            <AppButton title="Sign In" onPress={handleSubmit} />
+            <AppButton title="Sign In" onPress={handleSignIn} />
           </KeyboardAvoidingView>
           <View style={styles.textContainerStyle}>
             <Text>Not a member? </Text>
