@@ -16,6 +16,7 @@ import AppTextInput from '../components/AppTextInput';
 import PasswordTextInput from '../components/PasswordTextInput';
 import AppButton from '../components/AppButton';
 import auth from '@react-native-firebase/auth';
+import * as Keychain from 'react-native-keychain';
 
 const SignUpScreen = ({navigation, onSignUp}) => {
   const [inputs, setInputs] = useState({
@@ -71,8 +72,27 @@ const SignUpScreen = ({navigation, onSignUp}) => {
           inputs.passwordInput,
         );
         if (isUserCreated) {
-          console.log('isUserCreated : ', isUserCreated);
-          navigation.navigate('SignIn');
+          // console.log('isUserCreated : ', isUserCreated);
+
+          await auth().signOut();
+
+          const userData = {
+            fName: inputs.fNameInput,
+            lName: inputs.lNameInput,
+            email: inputs.emailInput,
+            phoneNo: inputs.phoneNoInput,
+          };
+
+          await Keychain.setGenericPassword(
+            'userData',
+            JSON.stringify(userData),
+          )
+            .then(() => console.log('User Data Stored Successfully!'))
+            .catch(err =>
+              console.log('Error in storing user data : ', err.message),
+            );
+
+          // navigation.navigate('SignInScreen');
         }
         setInputs({
           ...inputs,
@@ -92,8 +112,6 @@ const SignUpScreen = ({navigation, onSignUp}) => {
           passwordError: '',
           confirmPasswordError: '',
         });
-
-        // onSignUp();
       } else {
         setError({
           ...error,
@@ -262,7 +280,8 @@ const SignUpScreen = ({navigation, onSignUp}) => {
           </KeyboardAvoidingView>
           <View style={styles.textContainerStyle}>
             <Text>Already a member? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SignInScreen')}>
               <Text style={{color: COLORS.green200, marginLeft: 5}}>
                 Sign In
               </Text>

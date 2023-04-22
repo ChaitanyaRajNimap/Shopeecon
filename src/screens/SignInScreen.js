@@ -16,6 +16,7 @@ import AppTextInput from '../components/AppTextInput';
 import PasswordTextInput from '../components/PasswordTextInput';
 import AppButton from '../components/AppButton';
 import auth from '@react-native-firebase/auth';
+import * as Keychain from 'react-native-keychain';
 
 const SignInScreen = ({navigation, onSignIn}) => {
   const [inputs, setInputs] = useState({
@@ -32,6 +33,34 @@ const SignInScreen = ({navigation, onSignIn}) => {
   const emailInputRef = createRef();
   const passwordRef = createRef();
 
+  // useEffect(() => {
+  //   const unSubscribe = navigation.addListener('focus', () => {
+  //     const getUserData = async () => {
+  //       try {
+  //         const credentials = await Keychain.getGenericPassword();
+  //         if (credentials) {
+  //           console.log('credentials', credentials);
+  //           console.log(
+  //             'Credentials successfully loaded for user ' +
+  //               credentials.username,
+  //           );
+  //           console.log(
+  //             'Credentials successfully loaded for user ' +
+  //               credentials.password,
+  //           );
+  //         } else {
+  //           console.log('No credentials stored');
+  //         }
+  //       } catch (err) {
+  //         console.log("Keychain couldn't be accessed!", err);
+  //       }
+  //       await Keychain.resetGenericPassword();
+  //     };
+  //     getUserData();
+  //   });
+  //   return unSubscribe;
+  // }, [navigation]);
+
   const handleSignIn = async () => {
     let emailErr = validate.validateEmail(inputs.emailInput);
     let passwordErr = validate.validatePassword(inputs.passwordInput);
@@ -44,11 +73,10 @@ const SignInScreen = ({navigation, onSignIn}) => {
         );
         if (isUserSignIn) {
           console.log('isUserSignIn : ', isUserSignIn);
+          onSignIn();
           setInputs({...inputs, emailInput: null, passwordInput: null});
           setError({...error, emailError: '', passwordError: ''});
         }
-
-        // onSignIn();
       } else {
         setError({...error, emailError: emailErr, passwordError: passwordErr});
       }
@@ -116,7 +144,8 @@ const SignInScreen = ({navigation, onSignIn}) => {
           </KeyboardAvoidingView>
           <View style={styles.textContainerStyle}>
             <Text>Not a member? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SignUpScreen')}>
               <Text style={{color: COLORS.green200, marginLeft: 5}}>
                 Sign Up Now
               </Text>

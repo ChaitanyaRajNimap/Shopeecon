@@ -8,11 +8,11 @@ const Stack = createNativeStackNavigator();
 const AuthNavigation = ({onSignIn, onSignUp}) => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SignIn" options={{headerShown: false}}>
+      <Stack.Screen name="SignInScreen" options={{headerShown: false}}>
         {props => <SignInScreen {...props} onSignIn={onSignIn} />}
       </Stack.Screen>
 
-      <Stack.Screen name="SignUp" options={{headerShown: false}}>
+      <Stack.Screen name="SignUpScreen" options={{headerShown: false}}>
         {props => <SignUpScreen {...props} onSignUp={onSignUp} />}
       </Stack.Screen>
     </Stack.Navigator>
