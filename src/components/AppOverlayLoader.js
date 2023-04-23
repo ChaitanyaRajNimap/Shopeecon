@@ -2,11 +2,22 @@ import React from 'react';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {COLORS} from '../constants/Theme';
 
-const AppOverlayLoader = ({isLoading = false, isZindex = false}) => {
+const AppOverlayLoader = ({
+  isLoading = false,
+  isZindex = false,
+  isBgWhite = false,
+}) => {
   return (
     <>
       {isLoading ? (
-        <View style={[styles.loadinContainer, {zIndex: isZindex ? 90 : 0}]}>
+        <View
+          style={[
+            styles.loadinContainer,
+            {
+              zIndex: isZindex ? 90 : 0,
+              backgroundColor: isBgWhite ? 'white' : 'transparent',
+            },
+          ]}>
           <ActivityIndicator size="large" color={COLORS.green200} />
         </View>
       ) : null}
