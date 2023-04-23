@@ -1,4 +1,4 @@
-import React, {useState, useEffect, createRef} from 'react';
+import React, {useState, createRef} from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import PasswordTextInput from '../components/PasswordTextInput';
 import AppButton from '../components/AppButton';
 import auth from '@react-native-firebase/auth';
 import * as Keychain from 'react-native-keychain';
+import AppOverlayLoader from '../components/AppOverlayLoader';
 
 const SignInScreen = ({navigation, onSignIn}) => {
   const [inputs, setInputs] = useState({
@@ -27,41 +28,14 @@ const SignInScreen = ({navigation, onSignIn}) => {
     emailError: '',
     passwordError: '',
   });
-
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const emailInputRef = createRef();
   const passwordRef = createRef();
 
-  // useEffect(() => {
-  //   const unSubscribe = navigation.addListener('focus', () => {
-  //     const getUserData = async () => {
-  //       try {
-  //         const credentials = await Keychain.getGenericPassword();
-  //         if (credentials) {
-  //           console.log('credentials', credentials);
-  //           console.log(
-  //             'Credentials successfully loaded for user ' +
-  //               credentials.username,
-  //           );
-  //           console.log(
-  //             'Credentials successfully loaded for user ' +
-  //               credentials.password,
-  //           );
-  //         } else {
-  //           console.log('No credentials stored');
-  //         }
-  //       } catch (err) {
-  //         console.log("Keychain couldn't be accessed!", err);
-  //       }
-  //       await Keychain.resetGenericPassword();
-  //     };
-  //     getUserData();
-  //   });
-  //   return unSubscribe;
-  // }, [navigation]);
-
   const handleSignIn = async () => {
+    setIsLoading(true);
     let emailErr = validate.validateEmail(inputs.emailInput);
     let passwordErr = validate.validatePassword(inputs.passwordInput);
 
@@ -72,15 +46,25 @@ const SignInScreen = ({navigation, onSignIn}) => {
           inputs.passwordInput,
         );
         if (isUserSignIn) {
-          console.log('isUserSignIn : ', isUserSignIn);
+          // console.log('isUserSignIn : ', isUserSignIn);
+          // console.log('UID : ', isUserSignIn?.user?.uid);
+          setIsLoading(false);
+          await Keychain.resetGenericPassword();
+          await Keychain.setGenericPassword('Token', isUserSignIn?.user?.uid)
+            .then(() => console.log('User Details Stored Successfully!'))
+            .catch(err =>
+              console.log('Error in storing user details : ', err.message),
+            );
           onSignIn();
           setInputs({...inputs, emailInput: null, passwordInput: null});
           setError({...error, emailError: '', passwordError: ''});
         }
       } else {
+        setIsLoading(false);
         setError({...error, emailError: emailErr, passwordError: passwordErr});
       }
     } catch (err) {
+      setIsLoading(false);
       console.log('Error in Sign IN : ', err.message);
       Alert.alert('Alert!', err.message);
     }
@@ -153,6 +137,7 @@ const SignInScreen = ({navigation, onSignIn}) => {
           </View>
         </View>
       </ScrollView>
+      <AppOverlayLoader isLoading={isLoading} isZindex={true} />
     </SafeAreaView>
   );
 };

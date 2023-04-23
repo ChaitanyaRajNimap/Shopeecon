@@ -1,4 +1,4 @@
-import React, {useState, useEffect, createRef} from 'react';
+import React, {useState, createRef} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../constants/Theme';
 import validate from '../constants/Validation';
@@ -16,7 +17,8 @@ import AppTextInput from '../components/AppTextInput';
 import PasswordTextInput from '../components/PasswordTextInput';
 import AppButton from '../components/AppButton';
 import auth from '@react-native-firebase/auth';
-import * as Keychain from 'react-native-keychain';
+import database from '@react-native-firebase/database';
+import AppOverlayLoader from '../components/AppOverlayLoader';
 
 const SignUpScreen = ({navigation, onSignUp}) => {
   const [inputs, setInputs] = useState({
@@ -35,10 +37,10 @@ const SignUpScreen = ({navigation, onSignUp}) => {
     passwordError: '',
     confirmPasswordError: '',
   });
-
-  const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
-    useState(true);
+    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fNameInputRef = createRef();
   const lNameInputRef = createRef();
@@ -47,7 +49,18 @@ const SignUpScreen = ({navigation, onSignUp}) => {
   const passwordInputRef = createRef();
   const confirmPasswordInputRef = createRef();
 
+  const storeUserDetails = async data => {
+    try {
+      let idx = data?.uid;
+      const res = await database().ref(`users/${idx}`).set({data});
+      console.log('res of storing data =>', res);
+    } catch (err) {
+      console.log('Errror in storing user details', err.message);
+    }
+  };
+
   const handleSignUp = async () => {
+    setIsLoading(true);
     let fNameErr = validate.validateName(inputs.fNameInput);
     let lNameErr = validate.validateName(inputs.lNameInput);
     let emailErr = validate.validateEmail(inputs.emailInput);
@@ -72,47 +85,43 @@ const SignUpScreen = ({navigation, onSignUp}) => {
           inputs.passwordInput,
         );
         if (isUserCreated) {
-          // console.log('isUserCreated : ', isUserCreated);
+          setIsLoading(false);
+          console.log('isUserCreated : ', isUserCreated);
 
           await auth().signOut();
 
           const userData = {
-            fName: inputs.fNameInput,
-            lName: inputs.lNameInput,
-            email: inputs.emailInput,
-            phoneNo: inputs.phoneNoInput,
+            uid: isUserCreated?.user?.uid,
+            fName: inputs?.fNameInput,
+            lName: inputs?.lNameInput,
+            email: inputs?.emailInput,
+            phoneNo: inputs?.phoneNoInput,
           };
-
-          await Keychain.setGenericPassword(
-            'userData',
-            JSON.stringify(userData),
-          )
-            .then(() => console.log('User Data Stored Successfully!'))
-            .catch(err =>
-              console.log('Error in storing user data : ', err.message),
-            );
-
-          // navigation.navigate('SignInScreen');
+          storeUserDetails(userData);
+          setInputs({
+            ...inputs,
+            fNameInput: null,
+            lNameInput: null,
+            emailInput: null,
+            phoneNoInput: null,
+            passwordInput: null,
+            confirmPasswordInput: null,
+          });
+          setError({
+            ...error,
+            fNameError: '',
+            lNameError: '',
+            emailError: '',
+            phoneNoError: '',
+            passwordError: '',
+            confirmPasswordError: '',
+          });
+        } else {
+          setIsLoading(false);
+          console.log('Error in creating user!');
         }
-        setInputs({
-          ...inputs,
-          fNameInput: null,
-          lNameInput: null,
-          emailInput: null,
-          phoneNoInput: null,
-          passwordInput: null,
-          confirmPasswordInput: null,
-        });
-        setError({
-          ...error,
-          fNameError: '',
-          lNameError: '',
-          emailError: '',
-          phoneNoError: '',
-          passwordError: '',
-          confirmPasswordError: '',
-        });
       } else {
+        setIsLoading(false);
         setError({
           ...error,
           fNameError: fNameErr,
@@ -124,6 +133,7 @@ const SignUpScreen = ({navigation, onSignUp}) => {
         });
       }
     } catch (err) {
+      setIsLoading(false);
       console.log('Error in Sign UP : ', err.message);
       if (
         err.message ==
@@ -153,7 +163,7 @@ const SignUpScreen = ({navigation, onSignUp}) => {
           <Text style={GLOBAL_STYLES.subHeadingStyle}>
             Welcome To {'\n'}Shopeefy
           </Text>
-          <KeyboardAvoidingView style={{marginTop: '10%'}} enabled>
+          <KeyboardAvoidingView style={{marginTop: '5%'}} enabled>
             <View style={styles.textInputContainerStyle}>
               <AppTextInput
                 value={inputs.fNameInput}
@@ -289,6 +299,7 @@ const SignUpScreen = ({navigation, onSignUp}) => {
           </View>
         </View>
       </ScrollView>
+      <AppOverlayLoader isLoading={isLoading} isZindex={true} />
     </SafeAreaView>
   );
 };

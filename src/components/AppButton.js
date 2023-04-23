@@ -16,7 +16,7 @@ export default AppButton;
 
 const styles = StyleSheet.create({
   buttonContainerStyle: {
-    marginTop: '10%',
+    marginTop: '5%',
     marginHorizontal: 15,
     padding: 20,
     borderColor: COLORS.gray200,
