@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import AuthNavigation from './AuthNavigation';
 import AppNavigation from './AppNavigation';
-import SplashScreen from '../screens/SplashScreen';
+import SplashScreen from '../screens/public/Splash/SplashScreen';
 
 const Stack = createNativeStackNavigator();
 

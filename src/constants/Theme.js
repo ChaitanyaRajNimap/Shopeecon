@@ -7,6 +7,8 @@ export const COLORS = {
   green200: '#39C7A4',
   gray200: '#939BA3',
   red200: '#F66D6E',
+  blue200: '#E4F2FB',
+  pink200: '#F8DBE0',
 };
 
 export const FONTS = {

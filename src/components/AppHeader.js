@@ -23,7 +23,7 @@ const AppHeader = ({back, title, customStyle}) => {
               style={styles.leftBtnStyle}
               onPress={() => navigation.goBack()}>
               <Image
-                source={require('../assets/left-arrow.png')}
+                source={require('../assets/images/left-arrow.png')}
                 style={{height: 20, width: 20}}
               />
             </TouchableOpacity>

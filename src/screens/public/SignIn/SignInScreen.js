@@ -10,14 +10,14 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {GLOBAL_STYLES, COLORS, FONTS} from '../constants/Theme';
-import validate from '../constants/Validation';
-import AppTextInput from '../components/AppTextInput';
-import PasswordTextInput from '../components/PasswordTextInput';
-import AppButton from '../components/AppButton';
+import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
+import validate from '../../../constants/Validation';
+import AppTextInput from '../../../components/AppTextInput';
+import PasswordTextInput from '../../../components/PasswordTextInput';
+import AppButton from '../../../components/AppButton';
 import auth from '@react-native-firebase/auth';
 import * as Keychain from 'react-native-keychain';
-import AppOverlayLoader from '../components/AppOverlayLoader';
+import AppOverlayLoader from '../../../components/AppOverlayLoader';
 
 const SignInScreen = ({navigation, onSignIn}) => {
   const [inputs, setInputs] = useState({

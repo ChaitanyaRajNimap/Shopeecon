@@ -31,12 +31,12 @@ const PasswordTextInput = forwardRef((props, ref) => {
       <TouchableOpacity onPress={props.onVisibilityChange}>
         {props.passwordVisible ? (
           <Image
-            source={require('../assets/view.png')}
+            source={require('../assets/images/view.png')}
             style={{height: 25, width: 25}}
           />
         ) : (
           <Image
-            source={require('../assets/hide.png')}
+            source={require('../assets/images/hide.png')}
             style={{height: 25, width: 25}}
           />
         )}

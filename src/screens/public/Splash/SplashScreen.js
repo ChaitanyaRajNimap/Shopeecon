@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
-import {GLOBAL_STYLES, COLORS, FONTS} from '../constants/Theme';
+import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import auth from '@react-native-firebase/auth';
 
 const SplashScreen = ({
