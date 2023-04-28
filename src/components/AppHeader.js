@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     alignItems: 'center',
-    backgroundColor: COLORS.white200,
+    // backgroundColor: COLORS.white200,
   },
   leftBtnStyle: {
     paddingHorizontal: 8,

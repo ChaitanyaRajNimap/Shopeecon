@@ -1,12 +1,18 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../constants/Theme';
+import {useNavigation} from '@react-navigation/native';
 
 const ProductHorizontalCard = ({data}) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={styles.cardContainerStyle}
-      onPress={() => console.log(`${data?.title} Pressed!`)}>
+      onPress={() =>
+        navigation.navigate('ProductDetails', {
+          productData: data,
+        })
+      }>
       <View style={{width: '35%'}}>
         {data?.images?.[1] ? (
           <Image

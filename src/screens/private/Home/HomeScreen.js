@@ -17,6 +17,7 @@ import database from '@react-native-firebase/database';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchAllProducts} from '../../../redux/features/allProducts/allProductsSlice';
 import {fetchProductCategories} from '../../../redux/features/productCategory/productCategorySlice';
+import {fetchProductByCategory} from '../../../redux/features/productByCategory/productByCategorySlice';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import AppOverlayLoader from '../../../components/AppOverlayLoader';
 import SearchBox from '../../../components/SearchBox';
@@ -34,9 +35,13 @@ const HomeScreen = ({navigation, onSignOut}) => {
   const productCategory = useSelector(
     state => state?.productCategory?.category,
   );
+  const productByCategory = useSelector(
+    state => state?.productByCategory?.productByCategory,
+  );
   const [userDetails, setUserDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
+  const [isCategorySelected, setIsCategorySelected] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -46,6 +51,10 @@ const HomeScreen = ({navigation, onSignOut}) => {
     dispatch(fetchAllProducts());
     dispatch(fetchProductCategories());
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchProductByCategory(isCategorySelected));
+  }, [isCategorySelected]);
 
   const getUserToken = async () => {
     try {
@@ -80,8 +89,18 @@ const HomeScreen = ({navigation, onSignOut}) => {
 
   const renderCategoryItem = ({item}) => {
     return (
-      <View style={styles.categoryBadgeContainerStyle}>
-        <TouchableOpacity onPress={() => console.log(item)}>
+      <View
+        style={[
+          styles.categoryBadgeContainerStyle,
+          {
+            backgroundColor:
+              isCategorySelected == item ? COLORS.blue200 : COLORS.white300,
+          },
+        ]}>
+        <TouchableOpacity
+          onPress={() => {
+            setIsCategorySelected(item);
+          }}>
           <Text style={styles.categoryBadgeTextStyle}>{item}</Text>
         </TouchableOpacity>
       </View>
@@ -110,7 +129,9 @@ const HomeScreen = ({navigation, onSignOut}) => {
             />
           </View>
 
-          <AllProductList data={allProducts} />
+          <AllProductList
+            data={isCategorySelected ? productByCategory : allProducts}
+          />
 
           {/* <Button
             title="Sign Out"
