@@ -6,6 +6,7 @@ export const COLORS = {
   black200: '#181818',
   green200: '#39C7A4',
   gray200: '#939BA3',
+  gray300: '#9C9C9C',
   red200: '#F66D6E',
   blue200: '#E4F2FB',
   pink200: '#F8DBE0',
