@@ -12,6 +12,7 @@ import {
   Button,
   LogBox,
   Image,
+  Modal,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import * as Keychain from 'react-native-keychain';
@@ -24,6 +25,7 @@ import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import AppOverlayLoader from '../../../components/AppOverlayLoader';
 import SearchBox from '../../../components/SearchBox';
 import AllProductList from './AllProductList';
+import AppButton from '../../../components/AppButton';
 
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.',
@@ -32,15 +34,6 @@ LogBox.ignoreLogs([
 const HomeScreen = ({navigation, onSignOut}) => {
   const dispatch = useDispatch();
   const reducerData = useSelector(state => state);
-  // const allProducts = useSelector(
-  //   state => state?.allProducts?.allProducts?.products,
-  // );
-  // const productCategory = useSelector(
-  //   state => state?.productCategory?.category,
-  // );
-  // const productByCategory = useSelector(
-  //   state => state?.productByCategory?.productByCategory,
-  // );
   const [userDetails, setUserDetails] = useState(null);
   const [productData, setProductData] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
@@ -50,6 +43,8 @@ const HomeScreen = ({navigation, onSignOut}) => {
   const [search, setSearch] = useState('');
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [sortBy, setSortBy] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -58,7 +53,6 @@ const HomeScreen = ({navigation, onSignOut}) => {
     }, 1000);
     dispatch(fetchAllProducts());
     dispatch(fetchProductCategories());
-    // setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -123,6 +117,7 @@ const HomeScreen = ({navigation, onSignOut}) => {
   };
 
   const filterSearchData = text => {
+    setIsLoading(true);
     let results = [];
     if (text) {
       let data = isCategorySelected ? productByCategory : allProducts;
@@ -143,7 +138,20 @@ const HomeScreen = ({navigation, onSignOut}) => {
     } else {
       setProductData(allProducts);
     }
-    console.log('Filter reached!');
+    setIsLoading(false);
+  };
+
+  const sortDataBy = pref => {
+    let results = [];
+    let data = isCategorySelected ? productByCategory : allProducts;
+    setIsLoading(true);
+    if (pref == 'asc') {
+      results = [...data].sort((a, b) => a.price - b.price);
+    } else {
+      results = [...data].sort((a, b) => b.price - a.price);
+    }
+    setProductData(results);
+    setIsLoading(false);
   };
 
   const renderCategoryItem = ({item}) => {
@@ -172,7 +180,7 @@ const HomeScreen = ({navigation, onSignOut}) => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <>
             <View style={styles.toolbarStyles}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setIsModalVisible(true)}>
                 <View style={styles.filterIconContainerStyle}>
                   <Image
                     source={require('../../../assets/images/filter-black.png')}
@@ -189,10 +197,7 @@ const HomeScreen = ({navigation, onSignOut}) => {
               />
             </View>
             <View style={styles.containerStyle}>
-              <AllProductList
-                // data={isCategorySelected ? productByCategory : allProducts}
-                data={productData}
-              />
+              {productData ? <AllProductList data={productData} /> : null}
 
               {/* <Button
             title="Sign Out"
@@ -202,21 +207,58 @@ const HomeScreen = ({navigation, onSignOut}) => {
               onSignOut();
             }}
           /> */}
-              {/* {productCategory
-          ? productCategory.map((item, index) => (
-              <Text key={index.toString()}>{item}</Text>
-            ))
-          : null} */}
-
-              {/* {allProducts
-          ? allProducts.map(item => (
-              <Text key={item?.id}>{item?.id + ', ' + item?.title}</Text>
-            ))
-          : null} */}
             </View>
           </>
         </TouchableWithoutFeedback>
       </View>
+      <Modal
+        animationType="slide"
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+        transparent>
+        <View style={GLOBAL_STYLES.rootContainerStyle}>
+          <View style={styles.cardContainerStyle}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginHorizontal: '6%',
+              }}>
+              <Text
+                style={[
+                  GLOBAL_STYLES.headingStyle,
+                  {marginBottom: 0, alignSelf: 'flex-start'},
+                ]}>
+                Sort By
+              </Text>
+              <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                <Image
+                  source={require('../../../assets/images/close-black.png')}
+                  style={{width: 25, height: 25}}
+                />
+              </TouchableOpacity>
+            </View>
+            <AppButton
+              title="Price : low to high"
+              onPress={() => {
+                setIsModalVisible(false);
+                sortDataBy('asc');
+              }}
+              customButtonStyle={styles.sortButtonStyle}
+              customButtonTextStyle={styles.sortButtomTextStyle}
+            />
+            <AppButton
+              title="Price : high to low"
+              onPress={() => {
+                setIsModalVisible(false);
+                sortDataBy('desc');
+              }}
+              customButtonStyle={styles.sortButtonStyle}
+              customButtonTextStyle={styles.sortButtomTextStyle}
+            />
+          </View>
+        </View>
+      </Modal>
       <AppOverlayLoader
         isLoading={isLoading}
         isZindex={true}
@@ -264,4 +306,23 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  cardContainerStyle: {
+    width: '70%',
+    height: '24%',
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: COLORS.gray300,
+    marginVertical: 5,
+    marginHorizontal: 20,
+    justifyContent: 'center',
+    backgroundColor: COLORS.white300,
+  },
+  sortButtonStyle: {
+    padding: 10,
+    backgroundColor: COLORS.white300,
+    borderWidth: 0.5,
+    borderColor: COLORS.gray300,
+  },
+  sortButtomTextStyle: {color: COLORS.black200, fontWeight: '600'},
 });
