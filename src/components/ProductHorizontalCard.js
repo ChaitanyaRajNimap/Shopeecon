@@ -48,6 +48,8 @@ const styles = StyleSheet.create({
   cardContainerStyle: {
     padding: 10,
     borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: COLORS.gray300,
     marginVertical: 5,
     marginHorizontal: 20,
     backgroundColor: COLORS.white300,

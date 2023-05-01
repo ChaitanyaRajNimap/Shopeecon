@@ -27,6 +27,8 @@ export default SearchBox;
 const styles = StyleSheet.create({
   searchBoxStyle: {
     padding: 10,
+    borderWidth: 0.5,
+    borderColor: COLORS.gray300,
     borderRadius: 10,
     margin: 10,
     marginHorizontal: 15,
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
   searchBoxTextInputStyle: {
     flex: 1,
     marginTop: 1,
-    marginHorizontal: 20,
+    marginLeft: '2%',
     color: COLORS.gray200,
     fontSize: FONTS.largeFontSize,
   },

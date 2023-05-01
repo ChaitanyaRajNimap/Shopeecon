@@ -7,6 +7,8 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   Button,
   LogBox,
   Image,
@@ -29,19 +31,25 @@ LogBox.ignoreLogs([
 
 const HomeScreen = ({navigation, onSignOut}) => {
   const dispatch = useDispatch();
-  const allProducts = useSelector(
-    state => state?.allProducts?.allProducts?.products,
-  );
-  const productCategory = useSelector(
-    state => state?.productCategory?.category,
-  );
-  const productByCategory = useSelector(
-    state => state?.productByCategory?.productByCategory,
-  );
+  const reducerData = useSelector(state => state);
+  // const allProducts = useSelector(
+  //   state => state?.allProducts?.allProducts?.products,
+  // );
+  // const productCategory = useSelector(
+  //   state => state?.productCategory?.category,
+  // );
+  // const productByCategory = useSelector(
+  //   state => state?.productByCategory?.productByCategory,
+  // );
   const [userDetails, setUserDetails] = useState(null);
+  const [productData, setProductData] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [productCategory, setProductCategory] = useState([]);
+  const [productByCategory, setProductByCategory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [isCategorySelected, setIsCategorySelected] = useState(null);
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -50,11 +58,30 @@ const HomeScreen = ({navigation, onSignOut}) => {
     }, 1000);
     dispatch(fetchAllProducts());
     dispatch(fetchProductCategories());
+    // setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    dispatch(fetchProductByCategory(isCategorySelected));
-  }, [isCategorySelected]);
+    if (reducerData?.allProducts?.allProducts?.products) {
+      setAllProducts(reducerData?.allProducts?.allProducts?.products);
+      setProductData(reducerData?.allProducts?.allProducts?.products);
+    }
+    if (reducerData?.productCategory?.category) {
+      setProductCategory(reducerData?.productCategory?.category);
+    }
+    setIsLoading(false);
+  }, [reducerData]);
+
+  useEffect(() => {
+    if (reducerData?.productByCategory?.productByCategory) {
+      setProductByCategory(reducerData?.productByCategory?.productByCategory);
+      if (isCategorySelected) {
+        setProductData(reducerData?.productByCategory?.productByCategory);
+      } else {
+        setProductData(reducerData?.allProducts?.allProducts?.products);
+      }
+    }
+  }, [reducerData?.productByCategory]);
 
   const getUserToken = async () => {
     try {
@@ -83,8 +110,40 @@ const HomeScreen = ({navigation, onSignOut}) => {
     }
   };
 
+  const getProductByCategory = item => {
+    setIsLoading(true);
+    dispatch(fetchProductByCategory(item));
+    setIsCategorySelected(!isCategorySelected);
+    setSelectedCategory(item);
+  };
+
   const setSearchValue = value => {
     setSearch(value);
+    filterSearchData(value);
+  };
+
+  const filterSearchData = text => {
+    let results = [];
+    if (text) {
+      let data = isCategorySelected ? productByCategory : allProducts;
+      results = data.filter(item => {
+        if (
+          item?.title.toLowerCase().includes(text.toLowerCase()) ||
+          item?.brand.toLowerCase().includes(text.toLowerCase()) ||
+          item?.category.toLowerCase().includes(text.toLowerCase())
+        ) {
+          return item;
+        }
+      });
+      if (results) {
+        setProductData(results);
+      } else {
+        setProductData([]);
+      }
+    } else {
+      setProductData(allProducts);
+    }
+    console.log('Filter reached!');
   };
 
   const renderCategoryItem = ({item}) => {
@@ -94,13 +153,12 @@ const HomeScreen = ({navigation, onSignOut}) => {
           styles.categoryBadgeContainerStyle,
           {
             backgroundColor:
-              isCategorySelected == item ? COLORS.blue200 : COLORS.white300,
+              isCategorySelected && selectedCategory == item
+                ? COLORS.blue200
+                : COLORS.white300,
           },
         ]}>
-        <TouchableOpacity
-          onPress={() => {
-            setIsCategorySelected(item);
-          }}>
+        <TouchableOpacity onPress={() => getProductByCategory(item)}>
           <Text style={styles.categoryBadgeTextStyle}>{item}</Text>
         </TouchableOpacity>
       </View>
@@ -109,31 +167,34 @@ const HomeScreen = ({navigation, onSignOut}) => {
 
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
-      <ScrollView
-        style={GLOBAL_STYLES.containerStyle}
-        nestedScrollEnabled={true}>
-        <View style={styles.containerStyle}>
-          <SearchBox setSearchValue={setSearchValue} />
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TouchableOpacity>
-              <Image
-                source={require('../../../assets/images/filter-black.png')}
-                style={styles.filterIconStyle}
+      <View style={GLOBAL_STYLES.containerStyle}>
+        <SearchBox setSearchValue={setSearchValue} />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <>
+            <View style={styles.toolbarStyles}>
+              <TouchableOpacity>
+                <View style={styles.filterIconContainerStyle}>
+                  <Image
+                    source={require('../../../assets/images/filter-black.png')}
+                    style={styles.filterIconStyle}
+                  />
+                </View>
+              </TouchableOpacity>
+              <FlatList
+                data={productCategory}
+                renderItem={renderCategoryItem}
+                keyExtractor={(item, idx) => idx.toString()}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
               />
-            </TouchableOpacity>
-            <FlatList
-              data={productCategory}
-              renderItem={renderCategoryItem}
-              keyExtractor={(item, idx) => idx.toString()}
-              horizontal={true}
-            />
-          </View>
+            </View>
+            <View style={styles.containerStyle}>
+              <AllProductList
+                // data={isCategorySelected ? productByCategory : allProducts}
+                data={productData}
+              />
 
-          <AllProductList
-            data={isCategorySelected ? productByCategory : allProducts}
-          />
-
-          {/* <Button
+              {/* <Button
             title="Sign Out"
             onPress={async () => {
               await Keychain.resetGenericPassword();
@@ -141,19 +202,21 @@ const HomeScreen = ({navigation, onSignOut}) => {
               onSignOut();
             }}
           /> */}
-          {/* {productCategory
+              {/* {productCategory
           ? productCategory.map((item, index) => (
               <Text key={index.toString()}>{item}</Text>
             ))
           : null} */}
 
-          {/* {allProducts
+              {/* {allProducts
           ? allProducts.map(item => (
               <Text key={item?.id}>{item?.id + ', ' + item?.title}</Text>
             ))
           : null} */}
-        </View>
-      </ScrollView>
+            </View>
+          </>
+        </TouchableWithoutFeedback>
+      </View>
       <AppOverlayLoader
         isLoading={isLoading}
         isZindex={true}
@@ -168,13 +231,20 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
-    padding: 10,
+    // padding: 10,
     overflow: 'hidden',
+  },
+  toolbarStyles: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: '4%',
   },
   categoryBadgeContainerStyle: {
     padding: 10,
     backgroundColor: COLORS.white300,
     margin: 5,
+    borderWidth: 0.5,
+    borderColor: COLORS.gray300,
     borderRadius: 10,
   },
   categoryBadgeTextStyle: {
@@ -183,12 +253,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textTransform: 'capitalize',
   },
-  filterIconStyle: {
-    width: 25,
-    height: 25,
-    padding: 10,
-    backgroundColor: COLORS.white300,
+  filterIconContainerStyle: {
     margin: 5,
+    padding: 7,
     borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: COLORS.gray300,
+  },
+  filterIconStyle: {
+    width: 20,
+    height: 20,
   },
 });

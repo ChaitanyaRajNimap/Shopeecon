@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,11 +11,21 @@ import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import AppHeader from '../../../components/AppHeader';
 import AppCarousel from '../../../components/AppCarousel';
 import AppButton from '../../../components/AppButton';
+import ProductCounter from '../../../components/ProductCounter';
 
 const ProductDetailsScreen = ({route}) => {
   const {productData} = route.params;
 
+  const [isAddToCart, setIsAddToCart] = useState(false);
+  const [productCount, setProductCount] = useState(0);
+
   console.log('Product Data : ===> ', productData);
+
+  const incrementProductCount = () =>
+    setProductCount(prevCount => prevCount + 1);
+
+  const decrementProductCount = () =>
+    setProductCount(prevCount => prevCount - 1);
 
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
@@ -41,11 +51,36 @@ const ProductDetailsScreen = ({route}) => {
             </View>
           </View>
 
-          <AppButton
-            title="ADD TO CART"
-            onPress={() => {}}
-            customButtonStyle={{marginHorizontal: 0}}
-          />
+          {!isAddToCart ? (
+            <AppButton
+              title="ADD TO CART"
+              onPress={() => {
+                setIsAddToCart(true);
+              }}
+              customButtonStyle={{marginHorizontal: 0}}
+            />
+          ) : (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <ProductCounter
+                customStyle={{width: '30%'}}
+                productCount={productCount}
+                incrementProductCount={incrementProductCount}
+                decrementProductCount={decrementProductCount}
+              />
+              <View style={{width: '60%'}}>
+                <AppButton
+                  title="ADD"
+                  onPress={() => {}}
+                  customButtonStyle={{marginHorizontal: 0}}
+                />
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
