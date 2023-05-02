@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/private/Home/HomeScreen';
 import ProductDetailsScreen from '../screens/private/ProductDetails/ProductDetailsScreen';
+import MyCartScreen from '../screens/private/Cart/MyCartScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,11 @@ const AppNavigation = ({onSignOut}) => {
       <Stack.Screen
         name="ProductDetails"
         component={ProductDetailsScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MyCart"
+        component={MyCartScreen}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

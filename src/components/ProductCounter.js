@@ -19,10 +19,10 @@ const ProductCounter = ({
       }}>
       <TouchableOpacity
         onPress={() => decrementProductCount()}
-        disabled={productCount === 0 ? true : false}>
+        disabled={productCount === 1 ? true : false}>
         <Image
           source={
-            productCount === 0
+            productCount === 1
               ? require('../assets/images/minus-border.png')
               : require('../assets/images/minus-filled.png')
           }
