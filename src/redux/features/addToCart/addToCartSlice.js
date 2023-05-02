@@ -14,12 +14,14 @@ const addToCartSlice = createSlice({
       state.myCart = [...state.myCart, action.payload];
     },
     removeProduct: (state, action) => {
-      console.log('removeProduct : ', action.payload);
-      // state.myCart = state.myCart.filter(
-      //   product =>
-      //     product.uid !== action.payload.uid &&
-      //     product.orderId !== action.payload.orderId,
-      // );
+      state.myCart = state.myCart.filter(product => {
+        if (
+          product.uid === action.payload.uid &&
+          product.orderId !== action.payload.orderId
+        ) {
+          return product;
+        }
+      });
     },
   },
 });
