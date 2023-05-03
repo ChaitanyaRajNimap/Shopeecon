@@ -4,7 +4,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/private/Home/HomeScreen';
 import ProductDetailsScreen from '../screens/private/ProductDetails/ProductDetailsScreen';
 import MyCartScreen from '../screens/private/Cart/MyCartScreen';
-import SettingsScreen from '../screens/private/Settings/SettingsScreen';
+import MyProfileScreen from '../screens/private/MyProfile/MyProfileScreen';
+import OrdersScreen from '../screens/private/MyProfile/OrdersScreen';
+import EditProfile from '../screens/private/MyProfile/EditProfile';
 import {Image} from 'react-native';
 import {COLORS} from '../constants/Theme';
 
@@ -39,7 +41,7 @@ const HomeTabs = ({onSignOut}) => {
         component={MyCartScreen}
         options={{
           headerShown: false,
-          title: 'My Cart',
+          title: 'Cart',
           tabBarActiveTintColor: COLORS.green200,
           tabBarInactiveTintColor: COLORS.gray300,
           tabBarIcon: ({focused}) => (
@@ -55,8 +57,8 @@ const HomeTabs = ({onSignOut}) => {
         }}
       />
       {/* <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="MyProfile"
+        component={MyProfileScreen}
         options={{
           headerShown: false,
           tabBarActiveTintColor: COLORS.green200,
@@ -74,23 +76,24 @@ const HomeTabs = ({onSignOut}) => {
         }}
       /> */}
       <Tab.Screen
-        name="Settings"
+        name="MyProfile"
         options={{
           headerShown: false,
+          title: 'Profile',
           tabBarActiveTintColor: COLORS.green200,
           tabBarInactiveTintColor: COLORS.gray300,
           tabBarIcon: ({focused}) => (
             <Image
               source={
                 focused
-                  ? require('../assets/images/settings-green.png')
-                  : require('../assets/images/settings-gray.png')
+                  ? require('../assets/images/profile-green.png')
+                  : require('../assets/images/profile-gray.png')
               }
               style={{width: 25, height: 25}}
             />
           ),
         }}>
-        {props => <SettingsScreen {...props} onSignOut={onSignOut} />}
+        {props => <MyProfileScreen {...props} onSignOut={onSignOut} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
@@ -124,6 +127,16 @@ const AppNavigation = ({onSignOut}) => {
         component={MyCartScreen}
         options={{headerShown: false}}
       /> */}
+      <Stack.Screen
+        name="OrdersScreen"
+        component={OrdersScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
