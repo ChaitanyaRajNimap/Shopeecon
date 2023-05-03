@@ -11,7 +11,7 @@ import {COLORS} from '../constants/Theme';
 const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
-const HomeTabs = () => {
+const HomeTabs = ({onSignOut}) => {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -54,7 +54,7 @@ const HomeTabs = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
@@ -72,7 +72,26 @@ const HomeTabs = () => {
             />
           ),
         }}
-      />
+      /> */}
+      <Tab.Screen
+        name="Settings"
+        options={{
+          headerShown: false,
+          tabBarActiveTintColor: COLORS.green200,
+          tabBarInactiveTintColor: COLORS.gray300,
+          tabBarIcon: ({focused}) => (
+            <Image
+              source={
+                focused
+                  ? require('../assets/images/settings-green.png')
+                  : require('../assets/images/settings-gray.png')
+              }
+              style={{width: 25, height: 25}}
+            />
+          ),
+        }}>
+        {props => <SettingsScreen {...props} onSignOut={onSignOut} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };
@@ -85,11 +104,16 @@ const AppNavigation = ({onSignOut}) => {
         options={{headerShown: false, animationTypeForReplace: 'pop'}}>
         {props => <HomeScreen {...props} onSignOut={onSignOut} />}
       </Stack.Screen> */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Home"
         component={HomeTabs}
         options={{headerShown: false, animationTypeForReplace: 'pop'}}
-      />
+      /> */}
+      <Stack.Screen
+        name="Home"
+        options={{headerShown: false, animationTypeForReplace: 'pop'}}>
+        {props => <HomeTabs {...props} onSignOut={onSignOut} />}
+      </Stack.Screen>
       <Stack.Screen
         name="ProductDetails"
         component={ProductDetailsScreen}

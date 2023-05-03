@@ -40,6 +40,17 @@ const MyCartCard = ({item}) => {
   };
 
   const createOrder = item => {
+    const options = {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const orderPlacedDate = new Intl.DateTimeFormat('en-GB', options).format(
+      new Date(),
+    );
     let order = {
       uid: item?.uid,
       orderId: item?.orderId,
@@ -47,7 +58,9 @@ const MyCartCard = ({item}) => {
       brand: item?.brand,
       quantity: productCount,
       totalAmount: totalPrice(item),
+      orderPlacedDate: orderPlacedDate,
     };
+
     console.log('ORDERRRR : ', order);
     storeOrder(order);
   };

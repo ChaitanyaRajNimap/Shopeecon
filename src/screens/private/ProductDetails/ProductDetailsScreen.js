@@ -14,7 +14,6 @@ import auth from '@react-native-firebase/auth';
 import AppHeader from '../../../components/AppHeader';
 import AppCarousel from '../../../components/AppCarousel';
 import AppButton from '../../../components/AppButton';
-import ProductCounter from '../../../components/ProductCounter';
 import {addProduct} from '../../../redux/features/addToCart/addToCartSlice';
 
 const ProductDetailsScreen = ({route, navigation}) => {
@@ -22,15 +21,6 @@ const ProductDetailsScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
   const myCart = useSelector(state => state?.addToCart?.myCart);
   const uid = auth()?.currentUser?.uid;
-
-  const [isAddToCart, setIsAddToCart] = useState(false);
-  const [productCount, setProductCount] = useState(1);
-
-  const incrementProductCount = () =>
-    setProductCount(prevCount => prevCount + 1);
-
-  const decrementProductCount = () =>
-    setProductCount(prevCount => prevCount - 1);
 
   const generateOrderId = () => {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -80,42 +70,14 @@ const ProductDetailsScreen = ({route, navigation}) => {
             </View>
           </View>
 
-          {!isAddToCart ? (
-            <AppButton
-              title="ADD TO CART"
-              onPress={() => {
-                // setIsAddToCart(true);
-                addToCart(productData);
-              }}
-              customButtonStyle={{marginHorizontal: 0}}
-            />
-          ) : (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
-              <ProductCounter
-                customStyle={{width: '30%'}}
-                productCount={productCount}
-                incrementProductCount={incrementProductCount}
-                decrementProductCount={decrementProductCount}
-              />
-              <View style={{width: '60%'}}>
-                <AppButton
-                  title="Continue"
-                  onPress={() => {
-                    // navigation.navigate('MyCart', {
-                    //   item: productData,
-                    //   count: productCount,
-                    // })
-                  }}
-                  customButtonStyle={{marginHorizontal: 0}}
-                />
-              </View>
-            </View>
-          )}
+          <AppButton
+            title="ADD TO CART"
+            onPress={() => {
+              // setIsAddToCart(true);
+              addToCart(productData);
+            }}
+            customButtonStyle={{marginHorizontal: 0}}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

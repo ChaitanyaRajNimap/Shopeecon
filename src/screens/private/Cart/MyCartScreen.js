@@ -21,7 +21,7 @@ const MyCartScreen = ({route, navigation}) => {
         style={GLOBAL_STYLES.containerStyle}
         nestedScrollEnabled={true}>
         <View style={GLOBAL_STYLES.containerStyle}>
-          <AppHeader back={true} title="My Cart" />
+          <AppHeader back={false} title="My Cart" />
           {myCart.length > 0 ? (
             <FlatList
               data={myCart}
