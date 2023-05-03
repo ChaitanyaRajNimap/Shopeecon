@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   View,
+  Text,
   StyleSheet,
   SafeAreaView,
   ScrollView,
@@ -21,11 +22,19 @@ const MyCartScreen = ({route, navigation}) => {
         nestedScrollEnabled={true}>
         <View style={GLOBAL_STYLES.containerStyle}>
           <AppHeader back={true} title="My Cart" />
-          <FlatList
-            data={myCart}
-            renderItem={({item}) => <MyCartCard item={item} />}
-            keyExtractor={(item, idx) => idx.toString()}
-          />
+          {myCart.length > 0 ? (
+            <FlatList
+              data={myCart}
+              renderItem={({item}) => <MyCartCard item={item} />}
+              keyExtractor={(item, idx) => idx.toString()}
+            />
+          ) : (
+            <View style={styles.cardContainerStyle}>
+              <Text style={styles.errorTextStyle}>
+                Cart is empty add some items to cart.
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -34,4 +43,19 @@ const MyCartScreen = ({route, navigation}) => {
 
 export default MyCartScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  cardContainerStyle: {
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: COLORS.gray300,
+    marginVertical: 5,
+    marginHorizontal: 20,
+    backgroundColor: COLORS.white300,
+  },
+  errorTextStyle: {
+    color: COLORS.red200,
+    fontSize: FONTS.largeBoldx,
+    fontWeight: 'bold',
+  },
+});

@@ -23,12 +23,17 @@ const MyCartCard = ({item}) => {
     return total.toFixed(2);
   };
 
-  const storeOrder = async data => {
+  const storeOrder = async order => {
     try {
-      let idx1 = data?.uid;
-      let idx2 = data?.orderId;
-      const res = await database().ref(`orders/${idx1}/${idx2}`).set({data});
-      console.log('res of storing order : ', res);
+      let idx1 = order?.uid;
+      let idx2 = order?.orderId;
+      const res = await database()
+        .ref(`orders/${idx1}/${idx2}`)
+        .set({order})
+        .then(() => {
+          console.log('Order added to database!');
+          dispatch(removeProduct(item));
+        });
     } catch (err) {
       console.log('Error in storing order : ', err?.message);
     }
@@ -44,6 +49,7 @@ const MyCartCard = ({item}) => {
       totalAmount: totalPrice(item),
     };
     console.log('ORDERRRR : ', order);
+    storeOrder(order);
   };
 
   return (

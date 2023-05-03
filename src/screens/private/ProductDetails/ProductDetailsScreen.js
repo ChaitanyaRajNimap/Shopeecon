@@ -32,8 +32,18 @@ const ProductDetailsScreen = ({route, navigation}) => {
   const decrementProductCount = () =>
     setProductCount(prevCount => prevCount - 1);
 
+  const generateOrderId = () => {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let orderId = '';
+    for (let i = 0; i < 6; i++) {
+      orderId += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return orderId;
+  };
+
   const addToCart = product => {
-    let orderId = myCart.length + 1;
+    // let orderId = myCart.length + 1;
+    let orderId = generateOrderId();
     let productToAdd = {
       ...product,
       uid: uid,
