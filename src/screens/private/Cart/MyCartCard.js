@@ -5,6 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import AppButton from '../../../components/AppButton';
 import ProductCounter from '../../../components/ProductCounter';
 import {removeProduct} from '../../../redux/features/addToCart/addToCartSlice';
+import {addOrder} from '../../../redux/features/myOrders/myOrdersSlice';
 import database from '@react-native-firebase/database';
 
 const MyCartCard = ({item}) => {
@@ -32,6 +33,7 @@ const MyCartCard = ({item}) => {
         .set({order})
         .then(() => {
           console.log('Order added to database!');
+          // dispatch(addOrder(order));
           dispatch(removeProduct(item));
         });
     } catch (err) {
@@ -52,18 +54,16 @@ const MyCartCard = ({item}) => {
       new Date(),
     );
     let order = {
-      uid: item?.uid,
-      orderId: item?.orderId,
-      product: item?.title,
-      brand: item?.brand,
+      ...item,
       quantity: productCount,
       totalAmount: totalPrice(item),
       orderPlacedDate: orderPlacedDate,
     };
-
     console.log('ORDERRRR : ', order);
     storeOrder(order);
   };
+
+  console.log('ITEM : ', item);
 
   return (
     <View style={isItemActive ? styles.itemContainerStyle : {flex: 1}}>
