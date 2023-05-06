@@ -15,6 +15,7 @@ import AppHeader from '../../../components/AppHeader';
 import AppCarousel from '../../../components/AppCarousel';
 import AppButton from '../../../components/AppButton';
 import {addProduct} from '../../../redux/features/addToCart/addToCartSlice';
+import database from '@react-native-firebase/database';
 
 const ProductDetailsScreen = ({route, navigation}) => {
   const {productData} = route.params;
@@ -31,6 +32,22 @@ const ProductDetailsScreen = ({route, navigation}) => {
     return orderId;
   };
 
+  const addCartToDatabase = async cartItem => {
+    try {
+      let idx1 = cartItem?.uid;
+      let idx2 = cartItem?.orderId;
+      const res = await database()
+        .ref(`mycart/${idx1}/${idx2}`)
+        .set({cartItem})
+        .then(() => {
+          console.log('Cart item added to database!');
+          navigation.navigate('MyCart');
+        });
+    } catch (err) {
+      console.log('Error in storing cart item : ', err?.message);
+    }
+  };
+
   const addToCart = product => {
     // let orderId = myCart.length + 1;
     let orderId = generateOrderId();
@@ -40,10 +57,11 @@ const ProductDetailsScreen = ({route, navigation}) => {
       orderId: orderId,
     };
     console.log('ADD TO CART PRODUCT : ', productToAdd);
-    dispatch(addProduct(productToAdd));
-    console.log('Product added to cart successfully!');
+    addCartToDatabase(productToAdd);
+    // dispatch(addProduct(productToAdd));
+    // console.log('Product added to cart successfully!');
     // Alert.alert('', 'Product added to cart successfully!');
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
   };
 
   return (

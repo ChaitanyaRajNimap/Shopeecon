@@ -63,7 +63,7 @@ const HomeScreen = ({navigation, onSignOut}) => {
     if (reducerData?.productCategory?.category) {
       setProductCategory(reducerData?.productCategory?.category);
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   }, [reducerData]);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const HomeScreen = ({navigation, onSignOut}) => {
     try {
       const res = await database().ref(`users/${uid}`).once('value');
       if (res.val()) {
-        setIsLoading(false);
+        // setIsLoading(false);
         setUserDetails(res.val());
       }
     } catch (err) {
@@ -105,7 +105,7 @@ const HomeScreen = ({navigation, onSignOut}) => {
   };
 
   const getProductByCategory = item => {
-    setIsLoading(true);
+    // setIsLoading(true);
     dispatch(fetchProductByCategory(item));
     setIsCategorySelected(!isCategorySelected);
     setSelectedCategory(item);
@@ -173,6 +173,8 @@ const HomeScreen = ({navigation, onSignOut}) => {
     );
   };
 
+  const stopLoading = () => setIsLoading(false);
+
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
       <View style={GLOBAL_STYLES.containerStyle}>
@@ -197,7 +199,9 @@ const HomeScreen = ({navigation, onSignOut}) => {
               />
             </View>
             <View style={styles.containerStyle}>
-              {productData ? <AllProductList data={productData} /> : null}
+              {productData ? (
+                <AllProductList data={productData} stopLoading={stopLoading} />
+              ) : null}
 
               {/* <Button
             title="Sign Out"

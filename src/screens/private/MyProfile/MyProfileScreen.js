@@ -15,12 +15,15 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import AppHeader from '../../../components/AppHeader';
 import AppButton from '../../../components/AppButton';
+import AppOverlayLoader from '../../../components/AppOverlayLoader';
 
 const MyProfileScreen = ({navigation, onSignOut}) => {
   const uid = auth()?.currentUser?.uid;
   const [userDetails, setUserDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     if (uid) {
       getUserDetails(uid);
     }
@@ -35,6 +38,7 @@ const MyProfileScreen = ({navigation, onSignOut}) => {
     } catch (err) {
       console.log('Error in getting user data ====> ', err.message);
     }
+    setIsLoading(false);
   };
 
   console.log('UDATA : ', userDetails);
@@ -101,6 +105,11 @@ const MyProfileScreen = ({navigation, onSignOut}) => {
           <Text style={GLOBAL_STYLES.headingStyle}>{userDetails?.phoneNo}</Text> */}
         </View>
       </ScrollView>
+      <AppOverlayLoader
+        isLoading={isLoading}
+        isZindex={true}
+        isBgWhite={true}
+      />
     </SafeAreaView>
   );
 };

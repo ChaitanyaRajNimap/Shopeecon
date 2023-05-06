@@ -7,11 +7,14 @@ import ProductCounter from '../../../components/ProductCounter';
 import {removeProduct} from '../../../redux/features/addToCart/addToCartSlice';
 import {addOrder} from '../../../redux/features/myOrders/myOrdersSlice';
 import database from '@react-native-firebase/database';
+import {useNavigation} from '@react-navigation/native';
 
 const MyCartCard = ({item}) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [productCount, setProductCount] = useState(1);
-  const [isItemActive, setIsItemActive] = useState(false);
+  // const [isItemActive, setIsItemActive] = useState(false);
+  const [isItemActive, setIsItemActive] = useState(true);
 
   const incrementProductCount = () =>
     setProductCount(prevCount => prevCount + 1);
@@ -33,8 +36,9 @@ const MyCartCard = ({item}) => {
         .set({order})
         .then(() => {
           console.log('Order added to database!');
+          removeItemFromCart(item?.cartItem);
+          dispatch(removeProduct(item?.cartItem));
           // dispatch(addOrder(order));
-          dispatch(removeProduct(item));
         });
     } catch (err) {
       console.log('Error in storing order : ', err?.message);
@@ -63,7 +67,24 @@ const MyCartCard = ({item}) => {
     storeOrder(order);
   };
 
-  console.log('ITEM : ', item);
+  // console.log('ITEM : ', item?.cartItem);
+  // console.log('ITEM : ', item);
+
+  const removeItemFromCart = async cartItem => {
+    try {
+      let idx1 = cartItem?.uid;
+      let idx2 = cartItem?.orderId;
+      const res = await database()
+        .ref(`mycart/${idx1}/${idx2}`)
+        .remove()
+        .then(() => {
+          console.log('Cart item removed!');
+          navigation.navigate('Home');
+        });
+    } catch (err) {
+      console.log('Error in removing cart item ', err);
+    }
+  };
 
   return (
     <View style={isItemActive ? styles.itemContainerStyle : {flex: 1}}>
@@ -73,12 +94,15 @@ const MyCartCard = ({item}) => {
             ? styles.cardContainerStyle
             : styles.activeCardContainerStyle
         }
-        onPress={() => setIsItemActive(!isItemActive)}>
+        onPress={() => {
+          // setIsItemActive(!isItemActive)
+          setIsItemActive(true);
+        }}>
         <>
           <View style={{width: '35%'}}>
-            {item?.images?.[1] ? (
+            {item?.cartItem?.images?.[1] ? (
               <Image
-                source={{uri: `${item?.images?.[1]}`}}
+                source={{uri: `${item?.cartItem?.images?.[1]}`}}
                 style={styles.imageStyle}
               />
             ) : (
@@ -92,10 +116,10 @@ const MyCartCard = ({item}) => {
           <View style={{width: '65%'}}>
             <View>
               <Text style={styles.titleStyle}>
-                {item?.title ? item?.title : '--'}
+                {item?.cartItem?.title ? item?.cartItem?.title : '--'}
               </Text>
               <Text style={styles.brandNameStyle}>
-                {item?.brand ? item?.brand : '--'}
+                {item?.cartItem?.brand ? item?.cartItem?.brand : '--'}
               </Text>
             </View>
             <View
@@ -130,7 +154,7 @@ const MyCartCard = ({item}) => {
               <View style={styles.billContainerStyle}>
                 <Text style={styles.billLableStyle}>Subtotal : </Text>
                 <Text style={styles.billNumberStyle}>
-                  ${item?.price * productCount}
+                  ${item?.cartItem?.price * productCount}
                 </Text>
               </View>
               <View style={styles.billContainerStyle}>
@@ -140,7 +164,7 @@ const MyCartCard = ({item}) => {
               <View style={styles.billContainerStyle}>
                 <Text style={styles.billLableStyle}>Discount : </Text>
                 <Text style={styles.billNumberStyle}>
-                  {item?.discountPercentage}%
+                  {item?.cartItem?.discountPercentage}%
                 </Text>
               </View>
             </View>
@@ -154,7 +178,9 @@ const MyCartCard = ({item}) => {
                 },
               ]}>
               <Text style={styles.billLableStyle}>Total : </Text>
-              <Text style={styles.billNumberStyle}>${totalPrice(item)}</Text>
+              <Text style={styles.billNumberStyle}>
+                ${totalPrice(item?.cartItem)}
+              </Text>
             </View>
           </View>
 
@@ -167,8 +193,10 @@ const MyCartCard = ({item}) => {
             <AppButton
               title="Remove"
               onPress={() => {
-                setIsItemActive(false);
-                dispatch(removeProduct(item));
+                // setIsItemActive(false);
+                setIsItemActive(true);
+                // dispatch(removeProduct(item?.cartItem));
+                removeItemFromCart(item?.cartItem);
               }}
               customButtonStyle={{
                 width: '45%',
@@ -180,8 +208,9 @@ const MyCartCard = ({item}) => {
             <AppButton
               title="Buy"
               onPress={() => {
-                setIsItemActive(false);
-                createOrder(item);
+                // setIsItemActive(false);
+                setIsItemActive(true);
+                createOrder(item?.cartItem);
               }}
               customButtonStyle={{
                 width: '45%',
