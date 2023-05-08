@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   SafeAreaView,
-  ScrollView,
   FlatList,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Button,
   LogBox,
   Image,
   Modal,
@@ -18,6 +16,7 @@ import auth from '@react-native-firebase/auth';
 import * as Keychain from 'react-native-keychain';
 import database from '@react-native-firebase/database';
 import {useSelector, useDispatch} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
 import {fetchAllProducts} from '../../../redux/features/allProducts/allProductsSlice';
 import {fetchProductCategories} from '../../../redux/features/productCategory/productCategorySlice';
 import {fetchProductByCategory} from '../../../redux/features/productByCategory/productByCategorySlice';
@@ -46,36 +45,73 @@ const HomeScreen = ({navigation, onSignOut}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [sortBy, setSortBy] = useState(null);
 
-  useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      getUserToken();
-    }, 1000);
-    dispatch(fetchAllProducts());
-    dispatch(fetchProductCategories());
-  }, []);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   setTimeout(() => {
+  //     getUserToken();
+  //   }, 1000);
+  //   dispatch(fetchAllProducts());
+  //   dispatch(fetchProductCategories());
+  // }, []);
 
-  useEffect(() => {
-    if (reducerData?.allProducts?.allProducts?.products) {
-      setAllProducts(reducerData?.allProducts?.allProducts?.products);
-      setProductData(reducerData?.allProducts?.allProducts?.products);
-    }
-    if (reducerData?.productCategory?.category) {
-      setProductCategory(reducerData?.productCategory?.category);
-    }
-    setIsLoading(false);
-  }, [reducerData]);
+  // useEffect(() => {
+  //   if (reducerData?.allProducts?.allProducts?.products) {
+  //     setAllProducts(reducerData?.allProducts?.allProducts?.products);
+  //     setProductData(reducerData?.allProducts?.allProducts?.products);
+  //   }
+  //   if (reducerData?.productCategory?.category) {
+  //     setProductCategory(reducerData?.productCategory?.category);
+  //   }
+  //   setIsLoading(false);
+  // }, [reducerData]);
 
-  useEffect(() => {
-    if (reducerData?.productByCategory?.productByCategory) {
-      setProductByCategory(reducerData?.productByCategory?.productByCategory);
-      if (isCategorySelected) {
-        setProductData(reducerData?.productByCategory?.productByCategory);
-      } else {
+  // useEffect(() => {
+  //   if (reducerData?.productByCategory?.productByCategory) {
+  //     setProductByCategory(reducerData?.productByCategory?.productByCategory);
+  //     if (isCategorySelected) {
+  //       setProductData(reducerData?.productByCategory?.productByCategory);
+  //     } else {
+  //       setProductData(reducerData?.allProducts?.allProducts?.products);
+  //     }
+  //   }
+  // }, [reducerData?.productByCategory]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      setTimeout(() => {
+        getUserToken();
+      }, 1000);
+      dispatch(fetchAllProducts());
+      dispatch(fetchProductCategories());
+    }, []),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (reducerData?.allProducts?.allProducts?.products) {
+        setAllProducts(reducerData?.allProducts?.allProducts?.products);
         setProductData(reducerData?.allProducts?.allProducts?.products);
       }
-    }
-  }, [reducerData?.productByCategory]);
+      if (reducerData?.productCategory?.category) {
+        setProductCategory(reducerData?.productCategory?.category);
+      }
+      setIsLoading(false);
+    }, [reducerData]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (reducerData?.productByCategory?.productByCategory) {
+        setProductByCategory(reducerData?.productByCategory?.productByCategory);
+        if (isCategorySelected) {
+          setProductData(reducerData?.productByCategory?.productByCategory);
+        } else {
+          setProductData(reducerData?.allProducts?.allProducts?.products);
+        }
+      }
+    }, [reducerData?.productByCategory]),
+  );
 
   const getUserToken = async () => {
     try {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import {useSelector, useDispatch} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import {fetchMyCart} from '../../../redux/features/addToCart/addToCartSlice';
 import AppHeader from '../../../components/AppHeader';
@@ -24,33 +25,45 @@ const MyCartScreen = ({route, navigation}) => {
   const [myCart, setMyCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    dispatch(fetchMyCart(uid));
-  }, []);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   dispatch(fetchMyCart(uid));
+  // }, []);
 
-  useEffect(() => {
-    if (reducerData) {
-      setMyCart(Object.values(reducerData));
-    }
-    setIsLoading(false);
-    refreshCart();
-  }, [reducerData]);
+  // useEffect(() => {
+  //   if (reducerData) {
+  //     setMyCart(Object.values(reducerData));
+  //   }
+  //   setIsLoading(false);
+  //   refreshCart();
+  // }, [reducerData]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      dispatch(fetchMyCart(uid));
+    }, []),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (reducerData) {
+        setMyCart(Object.values(reducerData));
+      }
+      setIsLoading(false);
+      refreshCart();
+    }, [reducerData]),
+  );
 
   const refreshCart = () => {
     database()
       .ref(`mycart/${uid}`)
       .on('value', snapshot => {
-        // console.log('User data: ', snapshot.val());
         if (snapshot.val()) {
           setMyCart(Object.values(snapshot.val()));
         }
       });
   };
-
-  // console.log('reducerData : ', reducerData);
-
-  // console.log('myCart => ', myCart);
 
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
