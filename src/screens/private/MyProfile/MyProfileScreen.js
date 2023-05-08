@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -7,14 +7,13 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import * as Keychain from 'react-native-keychain';
+import {useFocusEffect} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import AppHeader from '../../../components/AppHeader';
-import AppButton from '../../../components/AppButton';
 import AppOverlayLoader from '../../../components/AppOverlayLoader';
 
 const MyProfileScreen = ({navigation, onSignOut}) => {
@@ -22,26 +21,27 @@ const MyProfileScreen = ({navigation, onSignOut}) => {
   const [userDetails, setUserDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    if (uid) {
-      getUserDetails(uid);
-    }
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      if (uid) {
+        getUserDetails(uid);
+      }
+    }, []),
+  );
 
   const getUserDetails = async uid => {
     try {
       const res = await database().ref(`users/${uid}`).once('value');
       if (res.val()) {
         setUserDetails(res.val()?.data);
+        console.log('userDetails => ', res.val()?.data);
       }
     } catch (err) {
       console.log('Error in getting user data ====> ', err.message);
     }
     setIsLoading(false);
   };
-
-  console.log('UDATA : ', userDetails);
 
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
@@ -101,8 +101,6 @@ const MyProfileScreen = ({navigation, onSignOut}) => {
               <Text style={styles.actionTextStyle}>Sign Out</Text>
             </TouchableOpacity>
           </View>
-          {/* <Text style={GLOBAL_STYLES.headingStyle}>{userDetails?.email}</Text>
-          <Text style={GLOBAL_STYLES.headingStyle}>{userDetails?.phoneNo}</Text> */}
         </View>
       </ScrollView>
       <AppOverlayLoader

@@ -7,7 +7,7 @@ const AllProductList = ({data, stopLoading}) => {
   const renderItem = ({item}) => {
     return <ProductHorizontalCard data={item} />;
   };
-  stopLoading();
+  // stopLoading();
   return (
     <View>
       {data.length > 0 ? (

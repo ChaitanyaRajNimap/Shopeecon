@@ -63,7 +63,7 @@ const HomeScreen = ({navigation, onSignOut}) => {
     if (reducerData?.productCategory?.category) {
       setProductCategory(reducerData?.productCategory?.category);
     }
-    // setIsLoading(false);
+    setIsLoading(false);
   }, [reducerData]);
 
   useEffect(() => {
