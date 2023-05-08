@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -25,35 +25,35 @@ const MyCartScreen = ({route, navigation}) => {
   const [myCart, setMyCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   dispatch(fetchMyCart(uid));
-  // }, []);
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(fetchMyCart(uid));
+  }, []);
 
-  // useEffect(() => {
-  //   if (reducerData) {
-  //     setMyCart(Object.values(reducerData));
-  //   }
-  //   setIsLoading(false);
-  //   refreshCart();
-  // }, [reducerData]);
+  useEffect(() => {
+    if (reducerData) {
+      setMyCart(Object.values(reducerData));
+    }
+    setIsLoading(false);
+    refreshCart();
+  }, [reducerData]);
 
-  useFocusEffect(
-    useCallback(() => {
-      setIsLoading(true);
-      dispatch(fetchMyCart(uid));
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     setIsLoading(true);
+  //     dispatch(fetchMyCart(uid));
+  //   }, []),
+  // );
 
-  useFocusEffect(
-    useCallback(() => {
-      if (reducerData) {
-        setMyCart(Object.values(reducerData));
-      }
-      setIsLoading(false);
-      refreshCart();
-    }, [reducerData]),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (reducerData) {
+  //       setMyCart(Object.values(reducerData));
+  //     }
+  //     setIsLoading(false);
+  //     refreshCart();
+  //   }, [reducerData]),
+  // );
 
   const refreshCart = () => {
     database()
