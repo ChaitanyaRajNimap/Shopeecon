@@ -19,6 +19,7 @@ import AppButton from '../../../components/AppButton';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import AppOverlayLoader from '../../../components/AppOverlayLoader';
+import Toast from 'react-native-simple-toast';
 
 const SignUpScreen = ({navigation, onSignUp}) => {
   const [inputs, setInputs] = useState({
@@ -116,9 +117,11 @@ const SignUpScreen = ({navigation, onSignUp}) => {
             passwordError: '',
             confirmPasswordError: '',
           });
+          Toast.show('New user sign up successfully!', Toast.LONG);
         } else {
           setIsLoading(false);
           console.log('Error in creating user!');
+          Toast.show('Error in signing up ew user!', Toast.LONG);
         }
       } else {
         setIsLoading(false);

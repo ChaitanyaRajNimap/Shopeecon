@@ -18,6 +18,7 @@ import AppButton from '../../../components/AppButton';
 import auth from '@react-native-firebase/auth';
 import * as Keychain from 'react-native-keychain';
 import AppOverlayLoader from '../../../components/AppOverlayLoader';
+import Toast from 'react-native-simple-toast';
 
 const SignInScreen = ({navigation, onSignIn}) => {
   const [inputs, setInputs] = useState({
@@ -58,10 +59,12 @@ const SignInScreen = ({navigation, onSignIn}) => {
           onSignIn();
           setInputs({...inputs, emailInput: null, passwordInput: null});
           setError({...error, emailError: '', passwordError: ''});
+          Toast.show('Sign In Successfully!', Toast.LONG);
         }
       } else {
         setIsLoading(false);
         setError({...error, emailError: emailErr, passwordError: passwordErr});
+        Toast.show('Sign in is unsuccessful!', Toast.LONG);
       }
     } catch (err) {
       setIsLoading(false);

@@ -18,6 +18,7 @@ import AppTextInput from '../../../components/AppTextInput';
 import PasswordTextInput from '../../../components/PasswordTextInput';
 import AppButton from '../../../components/AppButton';
 import AppOverlayLoader from '../../../components/AppOverlayLoader';
+import Toast from 'react-native-simple-toast';
 
 const EditProfile = ({navigation}) => {
   const currUser = auth().currentUser;
@@ -154,6 +155,7 @@ const EditProfile = ({navigation}) => {
         handleUpdateEmailAndPassword();
         setIsLoading(false);
         navigation.navigate('MyProfile');
+        Toast.show('User details updated successfully!', Toast.LONG);
         setInputs({
           ...inputs,
           fNameInput: null,

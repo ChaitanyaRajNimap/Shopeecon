@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import {useSelector, useDispatch} from 'react-redux';
 import AppButton from '../../../components/AppButton';
@@ -8,6 +15,7 @@ import {removeProduct} from '../../../redux/features/addToCart/addToCartSlice';
 import {addOrder} from '../../../redux/features/myOrders/myOrdersSlice';
 import database from '@react-native-firebase/database';
 import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-simple-toast';
 
 const MyCartCard = ({item}) => {
   const dispatch = useDispatch();
@@ -39,6 +47,7 @@ const MyCartCard = ({item}) => {
           removeItemFromCart(item?.cartItem);
           dispatch(removeProduct(item?.cartItem));
           // dispatch(addOrder(order));
+          Toast.show('Order placed successfully!', Toast.LONG);
         });
     } catch (err) {
       console.log('Error in storing order : ', err?.message);
@@ -80,9 +89,15 @@ const MyCartCard = ({item}) => {
         .then(() => {
           console.log('Cart item removed!');
           navigation.navigate('Home');
+          Toast.show('Product removed from cart successfully!', Toast.LONG);
         });
     } catch (err) {
       console.log('Error in removing cart item ', err);
+      Alert.alert(
+        'Alert',
+        'Error whie removing product from cart',
+        err?.message,
+      );
     }
   };
 

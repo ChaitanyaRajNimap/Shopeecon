@@ -16,6 +16,7 @@ import AppCarousel from '../../../components/AppCarousel';
 import AppButton from '../../../components/AppButton';
 import {addProduct} from '../../../redux/features/addToCart/addToCartSlice';
 import database from '@react-native-firebase/database';
+import Toast from 'react-native-simple-toast';
 
 const ProductDetailsScreen = ({route, navigation}) => {
   const {productData} = route.params;
@@ -42,9 +43,11 @@ const ProductDetailsScreen = ({route, navigation}) => {
         .then(() => {
           console.log('Cart item added to database!');
           navigation.navigate('MyCart');
+          Toast.show('Product added to cart successfully!', Toast.LONG);
         });
     } catch (err) {
       console.log('Error in storing cart item : ', err?.message);
+      Alert.alert('Alert', 'Error in adding product to cart ', err?.message);
     }
   };
 

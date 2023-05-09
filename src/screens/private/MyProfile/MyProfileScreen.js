@@ -15,6 +15,7 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import AppHeader from '../../../components/AppHeader';
 import AppOverlayLoader from '../../../components/AppOverlayLoader';
+import Toast from 'react-native-simple-toast';
 
 const MyProfileScreen = ({navigation, onSignOut}) => {
   const uid = auth()?.currentUser?.uid;
@@ -93,6 +94,7 @@ const MyProfileScreen = ({navigation, onSignOut}) => {
                 await Keychain.resetGenericPassword();
                 await auth().signOut();
                 onSignOut();
+                Toast.show('Sign out successfully!', Toast.LONG);
               }}>
               <Image
                 source={require('../../../assets/images/logout.png')}
