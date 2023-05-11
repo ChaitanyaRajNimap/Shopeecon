@@ -46,4 +46,13 @@ export const GLOBAL_STYLES = {
     fontSize: FONTS.xlargeFontSize,
     fontWeight: 'bold',
   },
+  toastStyle: {
+    padding: 5,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: COLORS.gray300,
+    backgroundColor: COLORS.white200,
+    color: COLORS.black200,
+    fontSize: FONTS.normalFontSize,
+  },
 };

@@ -59,12 +59,16 @@ const SignInScreen = ({navigation, onSignIn}) => {
           onSignIn();
           setInputs({...inputs, emailInput: null, passwordInput: null});
           setError({...error, emailError: '', passwordError: ''});
-          Toast.show('Sign In Successfully!', Toast.LONG);
+          Toast.show('Sign In Successfully!', Toast.LONG, {
+            style: GLOBAL_STYLES.toastStyle,
+          });
         }
       } else {
         setIsLoading(false);
         setError({...error, emailError: emailErr, passwordError: passwordErr});
-        Toast.show('Sign in is unsuccessful!', Toast.LONG);
+        Toast.show('Sign in is unsuccessful!', Toast.LONG, {
+          style: GLOBAL_STYLES.toastStyle,
+        });
       }
     } catch (err) {
       setIsLoading(false);

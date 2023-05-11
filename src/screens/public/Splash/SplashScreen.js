@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, Image} from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import auth from '@react-native-firebase/auth';
 
@@ -26,7 +26,19 @@ const SplashScreen = ({
   return (
     <SafeAreaView style={GLOBAL_STYLES.rootContainerStyle}>
       <View style={GLOBAL_STYLES.rootContainerStyle}>
-        <Text style={GLOBAL_STYLES.headingStyle}>Splash Screen!</Text>
+        {/* <Text style={GLOBAL_STYLES.headingStyle}>Splash Screen!</Text> */}
+        <View
+          style={{
+            width: 200,
+            height: 200,
+            borderRadius: 100,
+            overflow: 'hidden',
+          }}>
+          <Image
+            source={require('../../../assets/images/splash.png')}
+            style={{width: 200, height: 200}}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
