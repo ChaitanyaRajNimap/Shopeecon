@@ -23,17 +23,15 @@ export default AppButton;
 
 const styles = StyleSheet.create({
   buttonContainerStyle: {
-    marginTop: '5%',
-    marginHorizontal: 15,
-    padding: 20,
-    borderColor: COLORS.gray200,
+    padding: 13,
     borderRadius: 10,
+    marginHorizontal: 10,
     backgroundColor: COLORS.green200,
   },
   buttonTextStyle: {
-    color: COLORS.white100,
     alignSelf: 'center',
-    fontSize: FONTS.xlargeFontSize,
+    color: COLORS.white100,
+    fontSize: FONTS.largeFontSize,
     fontWeight: 'bold',
   },
 });

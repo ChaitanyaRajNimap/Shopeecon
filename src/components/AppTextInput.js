@@ -25,14 +25,16 @@ export default AppTextInput;
 
 const styles = StyleSheet.create({
   textInputStyle: {
-    backgroundColor: COLORS.white200,
-    marginVertical: 10,
-    marginBottom: 5,
-    marginHorizontal: 15,
-    padding: 20,
+    padding: 10,
+    paddingHorizontal: 15,
+    borderWidth: 0.5,
     borderColor: COLORS.gray200,
     borderRadius: 10,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    marginBottom: 0,
+    backgroundColor: COLORS.white200,
     color: COLORS.black200,
-    fontSize: FONTS.xlargeFontSize,
+    fontSize: FONTS.largeFontSize,
   },
 });

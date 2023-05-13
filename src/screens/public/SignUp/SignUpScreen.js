@@ -160,13 +160,13 @@ const SignUpScreen = ({navigation, onSignUp}) => {
         <View
           style={[
             GLOBAL_STYLES.containerStyle,
-            {padding: 10, marginTop: '15%'},
+            {padding: 10, marginTop: '10%'},
           ]}>
           <Text style={GLOBAL_STYLES.headingStyle}>Hello New User!</Text>
           <Text style={GLOBAL_STYLES.subHeadingStyle}>
             Welcome To {'\n'}Shopeefy
           </Text>
-          <KeyboardAvoidingView style={{marginTop: '5%'}} enabled>
+          <KeyboardAvoidingView enabled>
             <View style={styles.textInputContainerStyle}>
               <AppTextInput
                 value={inputs.fNameInput}
@@ -292,12 +292,10 @@ const SignUpScreen = ({navigation, onSignUp}) => {
             <AppButton title="Sign Up" onPress={handleSignUp} />
           </KeyboardAvoidingView>
           <View style={styles.textContainerStyle}>
-            <Text>Already a member? </Text>
+            <Text style={styles.textStyle}>Already a member? </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('SignInScreen')}>
-              <Text style={{color: COLORS.green200, marginLeft: 5}}>
-                Sign In
-              </Text>
+              <Text style={styles.highlitedTextStyle}>Sign In</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -314,14 +312,23 @@ const styles = StyleSheet.create({
   errorTextStyle: {
     marginBottom: 5,
     marginHorizontal: 15,
-    fontSize: FONTS.largeBold,
+    fontSize: FONTS.smallFontSize,
     color: COLORS.red200,
   },
   textContainerStyle: {
     margin: 15,
-    marginBottom: '15%',
+    marginBottom: 0,
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  textStyle: {
+    color: COLORS.black200,
+    fontSize: FONTS.normalFontSize,
+  },
+  highlitedTextStyle: {
+    marginLeft: 3,
+    color: COLORS.green200,
+    fontSize: FONTS.normalFontSize,
   },
 });

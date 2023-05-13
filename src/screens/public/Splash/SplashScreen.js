@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {View, Text, SafeAreaView, Image} from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import auth from '@react-native-firebase/auth';
+import Lottie from 'lottie-react-native';
 
 const SplashScreen = ({
   navigation,
@@ -34,9 +35,13 @@ const SplashScreen = ({
             borderRadius: 100,
             overflow: 'hidden',
           }}>
-          <Image
+          {/* <Image
             source={require('../../../assets/images/splash.png')}
             style={{width: 200, height: 200}}
+          /> */}
+          <Lottie
+            source={require('../../../assets/animations/splash.json')}
+            autoPlay
           />
         </View>
       </View>

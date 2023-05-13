@@ -32,12 +32,12 @@ const PasswordTextInput = forwardRef((props, ref) => {
         {props.passwordVisible ? (
           <Image
             source={require('../assets/images/view.png')}
-            style={{height: 25, width: 25}}
+            style={styles.iconStyle}
           />
         ) : (
           <Image
             source={require('../assets/images/hide.png')}
-            style={{height: 25, width: 25}}
+            style={styles.iconStyle}
           />
         )}
       </TouchableOpacity>
@@ -49,19 +49,27 @@ export default PasswordTextInput;
 
 const styles = StyleSheet.create({
   textInputContainerStyle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.white200,
-    marginVertical: 10,
-    marginBottom: 5,
-    marginHorizontal: 15,
+    padding: 10,
+    borderWidth: 0.5,
     borderColor: COLORS.gray200,
     borderRadius: 10,
-    padding: 20,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    marginBottom: 0,
+    alignItems: 'center',
+    backgroundColor: COLORS.white200,
+    flexDirection: 'row',
   },
   textInputStyle: {
+    padding: 0,
+    margin: 0,
     flex: 1,
     color: COLORS.black200,
-    fontSize: FONTS.xlargeFontSize,
+    fontSize: FONTS.largeFontSize,
+  },
+  iconStyle: {
+    height: 20,
+    width: 20,
+    marginRight: 5,
   },
 });
