@@ -12,7 +12,7 @@ const AppTextInput = forwardRef((props, ref) => {
       onChangeText={handleChange}
       style={[styles.textInputStyle, {...props.customStyle}]}
       placeholderTextColor={COLORS.gray200}
-      underlineColorAndroid={COLORS.white100}
+      underlineColorAndroid="transparent"
       ref={ref}
       returnKeyType="next"
       autoCapitalize="none"

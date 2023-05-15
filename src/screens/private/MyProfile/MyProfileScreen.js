@@ -54,7 +54,7 @@ const MyProfileScreen = ({navigation, onSignOut}) => {
           <View style={styles.nameCardStyle}>
             <View
               style={{
-                width: '32.5%',
+                width: '37%',
                 backgroundColor: COLORS.white100,
                 borderRadius: 55,
                 padding: 5,
@@ -141,16 +141,20 @@ const styles = StyleSheet.create({
   },
   headingStyle: {
     color: COLORS.black100,
-    fontSize: FONTS.xxxlargeFontSize,
+    fontSize: FONTS.xlargeFontSize,
     fontWeight: 'bold',
   },
   actionContainerStyle: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingVertical: 7,
     borderBottomColor: COLORS.gray300,
   },
-  actionIconStyle: {width: 25, height: 25, marginRight: '5%'},
-  actionTextStyle: {fontSize: FONTS.xlargeFontSize, fontWeight: '600'},
+  actionIconStyle: {width: 20, height: 20, marginRight: '4%'},
+  actionTextStyle: {
+    color: COLORS.black200,
+    fontSize: FONTS.largeFontSize,
+    fontWeight: '600',
+  },
 });

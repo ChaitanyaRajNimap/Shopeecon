@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   errorTextStyle: {
     color: COLORS.red200,
-    fontSize: FONTS.largeBoldx,
+    fontSize: FONTS.largeFontSize,
     fontWeight: 'bold',
   },
 });

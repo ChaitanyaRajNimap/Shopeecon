@@ -205,7 +205,7 @@ const EditProfile = ({navigation}) => {
               GLOBAL_STYLES.containerStyle,
               {padding: 10, marginTop: '0%'},
             ]}>
-            <KeyboardAvoidingView style={{marginTop: '5%'}} enabled>
+            <KeyboardAvoidingView style={{marginTop: '0%'}} enabled>
               <View style={styles.textInputContainerStyle}>
                 <AppTextInput
                   value={inputs.fNameInput}
@@ -258,7 +258,7 @@ const EditProfile = ({navigation}) => {
                     phoneNoInputRef.current && phoneNoInputRef.current.focus()
                   }
                   editable={false}
-                  customStyle={{backgroundColor: COLORS.gray300}}
+                  customStyle={{backgroundColor: COLORS.gray500}}
                 />
                 <Text style={styles.errorTextStyle}>{error.emailError}</Text>
               </View>
@@ -355,12 +355,12 @@ const styles = StyleSheet.create({
   errorTextStyle: {
     marginBottom: 5,
     marginHorizontal: 15,
-    fontSize: FONTS.largeBold,
+    fontSize: FONTS.smallFontSize,
     color: COLORS.red200,
   },
   textContainerStyle: {
     margin: 15,
-    marginBottom: '15%',
+    marginBottom: 0,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

@@ -36,7 +36,7 @@ const OrdersScreen = () => {
   }, [reducerData]);
 
   const renderItem = ({item}) => {
-    console.log('ITEMMMM ', item?.order);
+    // console.log('ITEMMMM ', item?.order);
     return (
       <View style={styles.orderCardContainer}>
         <View style={{width: '35%'}}>
@@ -65,15 +65,16 @@ const OrdersScreen = () => {
           <View
             style={{
               width: '43%',
-              padding: 7,
+              padding: 5,
               borderRadius: 10,
+              alignItems: 'center',
               backgroundColor: COLORS.green200,
             }}>
             <Text
               style={{
-                fontSize: FONTS.largeFontSize,
-                fontWeight: '600',
                 color: COLORS.white100,
+                fontSize: FONTS.normalFontSize,
+                fontWeight: '600',
               }}>
               ORDERED
             </Text>
@@ -137,22 +138,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   imageStyle: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     borderRadius: 10,
   },
   errorTextStyle: {
     color: COLORS.red200,
-    fontSize: FONTS.largeBoldx,
+    fontSize: FONTS.largeFontSize,
     fontWeight: 'bold',
   },
   titleStyle: {
-    marginBottom: 5,
-    fontSize: FONTS.xxlargeFontSize,
+    // marginBottom: 5,
+    color: COLORS.black200,
+    fontSize: FONTS.largeBold,
     fontWeight: 'bold',
   },
   brandNameStyle: {
-    marginBottom: 5,
+    marginBottom: '3%',
+    color: COLORS.black200,
     fontSize: FONTS.largeFontSize,
   },
 });

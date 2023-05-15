@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 25,
     borderColor: COLORS.gray200,
+    marginTop: 7,
     marginBottom: 15,
     alignItems: 'center',
     flexDirection: 'row',

@@ -10,7 +10,7 @@ const SearchBox = props => {
     <View style={[styles.searchBoxStyle, props.customStyle]}>
       <TextInput
         placeholder="Search"
-        placeholderTextColor={{color: COLORS.gray400}}
+        placeholderTextColor={{color: COLORS.black200}}
         value={props.search}
         onChangeText={handleTextChange}
         style={styles.searchBoxTextInputStyle}
