@@ -215,7 +215,11 @@ const HomeScreen = ({navigation, onSignOut}) => {
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
       <View style={GLOBAL_STYLES.containerStyle}>
         <SearchBox setSearchValue={setSearchValue} />
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            Keyboard.dismiss();
+            setIsModalVisible(false);
+          }}>
           <>
             <View style={styles.toolbarStyles}>
               <TouchableOpacity onPress={() => setIsModalVisible(true)}>
@@ -267,14 +271,18 @@ const HomeScreen = ({navigation, onSignOut}) => {
               <Text
                 style={[
                   GLOBAL_STYLES.headingStyle,
-                  {marginBottom: 0, alignSelf: 'flex-start'},
+                  {
+                    marginBottom: 0,
+                    alignSelf: 'flex-start',
+                    fontSize: FONTS.largeBold,
+                  },
                 ]}>
                 Sort By
               </Text>
               <TouchableOpacity onPress={() => setIsModalVisible(false)}>
                 <Image
                   source={require('../../../assets/images/close-black.png')}
-                  style={{width: 25, height: 25}}
+                  style={{width: 20, height: 20}}
                 />
               </TouchableOpacity>
             </View>
@@ -322,7 +330,7 @@ const styles = StyleSheet.create({
     marginHorizontal: '4%',
   },
   categoryBadgeContainerStyle: {
-    padding: 10,
+    padding: 7,
     backgroundColor: COLORS.white300,
     margin: 5,
     borderWidth: 0.5,
@@ -331,7 +339,7 @@ const styles = StyleSheet.create({
   },
   categoryBadgeTextStyle: {
     color: COLORS.black200,
-    fontSize: FONTS.largeFontSize,
+    fontSize: FONTS.normalFontSize,
     fontWeight: 'bold',
     textTransform: 'capitalize',
   },
@@ -360,9 +368,14 @@ const styles = StyleSheet.create({
   },
   sortButtonStyle: {
     padding: 10,
+    marginVertical: 5,
     backgroundColor: COLORS.white300,
     borderWidth: 0.5,
     borderColor: COLORS.gray300,
   },
-  sortButtomTextStyle: {color: COLORS.black200, fontWeight: '600'},
+  sortButtomTextStyle: {
+    color: COLORS.black200,
+    fontWeight: '600',
+    fontSize: FONTS.normalFontSize,
+  },
 });

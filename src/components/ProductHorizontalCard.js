@@ -57,22 +57,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   imageStyle: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     borderRadius: 10,
   },
   titleStyle: {
-    marginBottom: 5,
-    fontSize: FONTS.xxlargeFontSize,
+    // marginBottom: 3,
+    color: COLORS.black200,
+    fontSize: FONTS.largeBold,
     fontWeight: 'bold',
   },
   brandNameStyle: {
-    marginBottom: 5,
-    fontSize: FONTS.largeFontSize,
+    marginBottom: '3%',
+    color: COLORS.black200,
+    fontSize: FONTS.normalFontSize,
   },
   priceTextStyle: {
     marginBottom: 5,
-    fontSize: FONTS.xlargeFontSize,
+    color: COLORS.black200,
+    fontSize: FONTS.largeBold,
     fontWeight: 'bold',
   },
 });

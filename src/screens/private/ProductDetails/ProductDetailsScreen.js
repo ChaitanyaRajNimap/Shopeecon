@@ -81,9 +81,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
           <View style={styles.priceAndRatingViewStyle}>
             <Text style={styles.priceStyle}>${productData?.price}</Text>
             <View style={styles.ratingContainerStyle}>
-              <Text style={{fontSize: FONTS.largeBold, marginRight: 5}}>
-                {productData?.rating}
-              </Text>
+              <Text style={styles.ratingtextStyle}>{productData?.rating}</Text>
               <Image
                 source={require('../../../assets/images/star-green.png')}
                 style={styles.ratingIconStyle}
@@ -109,49 +107,56 @@ export default ProductDetailsScreen;
 
 const styles = StyleSheet.create({
   containerStyle: {
-    flex: 1,
     padding: 10,
     paddingHorizontal: 20,
+    flex: 1,
     overflow: 'hidden',
   },
   headingStyle: {
-    ...GLOBAL_STYLES.headingStyle,
-    marginBottom: 5,
     alignSelf: 'flex-start',
-  },
-  subHeading: {
-    marginBottom: 10,
     color: COLORS.black100,
     fontSize: FONTS.xlargeFontSize,
     fontWeight: 'bold',
   },
+  subHeading: {
+    marginBottom: 10,
+    color: COLORS.black100,
+    fontSize: FONTS.largeBold,
+    fontWeight: 'bold',
+  },
   description: {
-    marginBottom: 20,
-    textAlign: 'left',
+    marginBottom: 5,
     color: COLORS.gray300,
-    fontSize: FONTS.largeBoldx,
+    fontSize: FONTS.normalFontSize,
+    textAlign: 'left',
   },
   priceStyle: {
     color: COLORS.black100,
-    fontSize: FONTS.xxlargeFontSize,
+    fontSize: FONTS.largeBold,
     fontWeight: 'bold',
   },
   ratingIconStyle: {
-    width: 20,
     height: 20,
+    width: 20,
   },
   priceAndRatingViewStyle: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   ratingContainerStyle: {
     padding: 5,
     paddingHorizontal: 10,
-    borderRadius: 25,
-    flexDirection: 'row',
-    alignItems: 'center',
     borderWidth: 1,
+    borderRadius: 25,
     borderColor: COLORS.gray200,
+    marginBottom: 15,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  ratingtextStyle: {
+    marginRight: 5,
+    color: COLORS.black200,
+    fontSize: FONTS.largeFontSize,
   },
 });

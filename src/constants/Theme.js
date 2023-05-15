@@ -7,7 +7,7 @@ export const COLORS = {
   green200: '#39C7A4',
   gray200: '#939BA3',
   gray300: '#9C9C9C',
-  gray400: '#EEEEEE',
+  gray400: '#999',
   red200: '#F66D6E',
   blue200: '#E4F2FB',
   pink200: '#F8DBE0',
@@ -45,14 +45,5 @@ export const GLOBAL_STYLES = {
     color: COLORS.black100,
     fontSize: FONTS.xlargeFontSize,
     fontWeight: 'bold',
-  },
-  toastStyle: {
-    padding: 5,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: COLORS.gray300,
-    backgroundColor: COLORS.white200,
-    color: COLORS.black200,
-    fontSize: FONTS.normalFontSize,
   },
 };

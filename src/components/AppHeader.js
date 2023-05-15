@@ -24,7 +24,7 @@ const AppHeader = ({back, title, customStyle}) => {
               onPress={() => navigation.goBack()}>
               <Image
                 source={require('../assets/images/left-arrow.png')}
-                style={{height: 20, width: 20}}
+                style={{height: 15, width: 15}}
               />
             </TouchableOpacity>
             <View style={[styles.headerContentStyle, {paddingRight: '10%'}]}>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerTextStyle: {
-    fontSize: FONTS.xlargeFontSize,
+    fontSize: FONTS.largeBold,
     fontWeight: '700',
     color: COLORS.black200,
   },

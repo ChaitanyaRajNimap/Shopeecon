@@ -12,8 +12,8 @@ const ProductCounter = ({
     <View
       style={{
         marginTop: 10,
-        flexDirection: 'row',
         alignItems: 'center',
+        flexDirection: 'row',
         justifyContent: 'space-between',
         ...customStyle,
       }}>
@@ -26,10 +26,12 @@ const ProductCounter = ({
               ? require('../assets/images/minus-border.png')
               : require('../assets/images/minus-filled.png')
           }
-          style={{width: 35, height: 35}}
+          style={{width: 27, height: 27}}
         />
       </TouchableOpacity>
-      <Text style={{fontSize: FONTS.largeBoldx}}>{productCount}</Text>
+      <Text style={{color: COLORS.black200, fontSize: FONTS.largeFontSize}}>
+        {productCount}
+      </Text>
       <TouchableOpacity
         onPress={() => incrementProductCount()}
         disabled={productCount >= 5 ? true : false}>
@@ -39,7 +41,7 @@ const ProductCounter = ({
               ? require('../assets/images/plus-border.png')
               : require('../assets/images/plus-filled.png')
           }
-          style={{width: 35, height: 35}}
+          style={{width: 27, height: 27}}
         />
       </TouchableOpacity>
     </View>

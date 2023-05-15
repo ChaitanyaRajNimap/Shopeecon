@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Alert,
 } from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
@@ -103,7 +104,7 @@ const MyCartCard = ({item}) => {
 
   return (
     <View style={isItemActive ? styles.itemContainerStyle : {flex: 1}}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={
           !isItemActive
             ? styles.cardContainerStyle
@@ -112,7 +113,13 @@ const MyCartCard = ({item}) => {
         onPress={() => {
           // setIsItemActive(!isItemActive)
           setIsItemActive(true);
-        }}>
+        }}> */}
+      <View
+        style={
+          !isItemActive
+            ? styles.cardContainerStyle
+            : styles.activeCardContainerStyle
+        }>
         <>
           <View style={{width: '35%'}}>
             {item?.cartItem?.images?.[1] ? (
@@ -152,7 +159,8 @@ const MyCartCard = ({item}) => {
             </View>
           </View>
         </>
-      </TouchableOpacity>
+      </View>
+      {/* </TouchableOpacity> */}
 
       {isItemActive ? (
         <>
@@ -161,9 +169,9 @@ const MyCartCard = ({item}) => {
               style={[
                 GLOBAL_STYLES.containerStyle,
                 {
+                  paddingVertical: '4%',
                   borderBottomWidth: 0.5,
                   borderBottomColor: COLORS.gray200,
-                  paddingVertical: '4%',
                 },
               ]}>
               <View style={styles.billContainerStyle}>
@@ -266,27 +274,29 @@ const styles = StyleSheet.create({
   },
   activeCardContainerStyle: {
     paddingBottom: '5%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     borderBottomWidth: 0.5,
     borderBottomColor: COLORS.gray300,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   imageStyle: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     borderRadius: 10,
   },
   titleStyle: {
     marginBottom: 5,
-    fontSize: FONTS.xxlargeFontSize,
+    color: COLORS.black200,
+    fontSize: FONTS.largeBold,
     fontWeight: 'bold',
   },
   brandNameStyle: {
     marginBottom: 5,
-    fontSize: FONTS.largeFontSize,
+    color: COLORS.black200,
+    fontSize: FONTS.normalFontSize,
   },
   priceTextStyle: {
-    marginBottom: 5,
+    marginBottom: 10,
     fontSize: FONTS.xlargeFontSize,
     fontWeight: 'bold',
   },
@@ -297,13 +307,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   billLableStyle: {
-    fontSize: FONTS.largeBold,
-    fontWeight: '600',
     color: COLORS.gray200,
+    fontSize: FONTS.largeFontSize,
+    fontWeight: '600',
   },
   billNumberStyle: {
-    fontSize: FONTS.largeBold,
-    fontWeight: 'bold',
     color: COLORS.black200,
+    fontSize: FONTS.largeFontSize,
+    fontWeight: 'bold',
   },
 });

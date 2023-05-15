@@ -10,6 +10,7 @@ const SearchBox = props => {
     <View style={[styles.searchBoxStyle, props.customStyle]}>
       <TextInput
         placeholder="Search"
+        placeholderTextColor={{color: COLORS.gray400}}
         value={props.search}
         onChangeText={handleTextChange}
         style={styles.searchBoxTextInputStyle}
@@ -26,26 +27,28 @@ export default SearchBox;
 
 const styles = StyleSheet.create({
   searchBoxStyle: {
-    padding: 10,
+    padding: 7,
     borderWidth: 0.5,
     borderColor: COLORS.gray300,
     borderRadius: 10,
     margin: 10,
     marginHorizontal: 15,
-    flexDirection: 'row',
+    marginTop: 15,
     backgroundColor: COLORS.white300,
+    flexDirection: 'row',
   },
   searchBoxTextInputStyle: {
     flex: 1,
-    marginTop: 1,
+    padding: 0,
+    margin: 0,
     marginLeft: '2%',
-    color: COLORS.gray200,
-    fontSize: FONTS.largeFontSize,
+    color: COLORS.black200,
+    fontSize: FONTS.normalFontSize,
   },
   searchImageStyle: {
-    width: 25,
-    height: 25,
-    marginLeft: 10,
+    width: 20,
+    height: 20,
+    marginLeft: '7%',
     alignSelf: 'center',
   },
 });

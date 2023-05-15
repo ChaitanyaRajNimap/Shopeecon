@@ -21,7 +21,11 @@ const AppCarousel = ({data}) => {
 
   const renderItem = ({item}) => {
     return (
-      <View style={[GLOBAL_STYLES.rootContainerStyle, {borderRadius: 10}]}>
+      <View
+        style={[
+          GLOBAL_STYLES.rootContainerStyle,
+          {borderRadius: 10, overflow: 'hidden'},
+        ]}>
         <Image source={{uri: `${item}`}} style={styles.imageStyle} />
       </View>
     );
@@ -36,11 +40,11 @@ const AppCarousel = ({data}) => {
           }}>
           <View
             style={{
-              width: activeIndex === index ? 30 : 15,
-              height: 15,
+              width: activeIndex === index ? 24 : 12,
+              height: 12,
               backgroundColor:
                 activeIndex === index ? COLORS.green200 : COLORS.gray200,
-              marginHorizontal: 10,
+              marginHorizontal: 7,
               borderRadius: 25,
             }}></View>
         </TouchableOpacity>
@@ -83,7 +87,8 @@ export default AppCarousel;
 const styles = StyleSheet.create({
   imageStyle: {
     width: screenWidth - 40,
-    height: 350,
-    marginBottom: 15,
+    height: 275,
+    borderRadius: 10,
+    marginBottom: 10,
   },
 });
