@@ -58,6 +58,7 @@ const MyProfileScreen = ({navigation, onSignOut}) => {
                 backgroundColor: COLORS.white100,
                 borderRadius: 55,
                 padding: 5,
+                alignItems: 'center',
               }}>
               <Image source={require('../../../assets/images/person.png')} />
             </View>
