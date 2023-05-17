@@ -46,7 +46,7 @@ const MyCartCard = ({item}) => {
         .then(() => {
           console.log('Order added to database!');
           removeItemFromCart(item?.cartItem);
-          dispatch(removeProduct(item?.cartItem));
+          // dispatch(removeProduct(item?.cartItem));
           // dispatch(addOrder(order));
           Toast.show('Order placed successfully!', Toast.LONG);
         });
@@ -88,8 +88,8 @@ const MyCartCard = ({item}) => {
         .ref(`mycart/${idx1}/${idx2}`)
         .remove()
         .then(() => {
+          navigation.navigate('HomeScreen');
           console.log('Cart item removed!');
-          navigation.navigate('Home');
           Toast.show('Product removed from cart successfully!', Toast.LONG);
         });
     } catch (err) {

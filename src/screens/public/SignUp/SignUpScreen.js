@@ -117,7 +117,7 @@ const SignUpScreen = ({navigation, onSignUp}) => {
             passwordError: '',
             confirmPasswordError: '',
           });
-          Toast.show('New user sign up successfully!', Toast.LONG);
+          Toast.show('Signed up new user successfully!', Toast.LONG);
         } else {
           setIsLoading(false);
           console.log('Error in creating user!');

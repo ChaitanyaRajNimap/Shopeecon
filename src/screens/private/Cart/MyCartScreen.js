@@ -60,10 +60,13 @@ const MyCartScreen = ({route, navigation}) => {
       .ref(`mycart/${uid}`)
       .on('value', snapshot => {
         if (snapshot.val()) {
+          console.log('called!');
           setMyCart(Object.values(snapshot.val()));
         }
       });
   };
+
+  console.log('MY CART ++>', myCart);
 
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
