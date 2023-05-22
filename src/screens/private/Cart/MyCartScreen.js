@@ -27,67 +27,12 @@ const MyCartScreen = ({route, navigation}) => {
   const [myCart, setMyCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   // setIsLoading(true);
-  //   // dispatch(fetchMyCart(uid));
-  //   // refreshCart();
-  // }, []);
-
   useEffect(() => {
     if (reducerData) {
       setMyCart(Object.values(reducerData));
     }
     setIsLoading(false);
-    // refreshCart();
   }, [reducerData]);
-
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     setIsLoading(true);
-  //     dispatch(fetchMyCart(uid));
-  //   }
-  // }, [isFocused]);
-
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     if (reducerData) {
-  //       setMyCart(Object.values(reducerData));
-  //     }
-  //     refreshCart();
-  //     setIsLoading(false);
-  //   }
-  // }, [isFocused, reducerData]);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     setIsLoading(true);
-  //     dispatch(fetchMyCart(uid));
-  //   }, []),
-  // );
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     if (reducerData) {
-  //       setMyCart(Object.values(reducerData));
-  //     }
-  //     setIsLoading(false);
-  //     refreshCart();
-  //   }, [reducerData]),
-  // );
-
-  const refreshCart = () => {
-    database()
-      .ref(`mycart/${uid}`)
-      .on('value', snapshot => {
-        if (snapshot.val()) {
-          console.log('called!');
-          setMyCart(Object.values(snapshot.val()));
-          setIsLoading(false);
-        }
-      });
-  };
-
-  console.log('MY CART ++>', myCart);
 
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>

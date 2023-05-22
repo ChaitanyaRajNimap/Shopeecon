@@ -12,12 +12,6 @@ const RootNavigation = () => {
   const [isSplashScreen, setIsSplashScreen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // auth().onAuthStateChanged(user => {
-  //   if (user !== null) {
-  //     setIsAuthenticated(true);
-  //   }
-  // });
-
   const handleSignIn = () => setIsAuthenticated(true);
 
   const handleSignOut = () => setIsAuthenticated(false);

@@ -15,28 +15,34 @@ import AppHeader from '../../../components/AppHeader';
 import AppOverlayLoader from '../../../components/AppOverlayLoader';
 import database from '@react-native-firebase/database';
 import AppButton from '../../../components/AppButton';
-import ProductCounter from '../../../components/ProductCounter';
+import {removeProduct} from '../../../redux/features/addToCart/addToCartSlice';
 import Toast from 'react-native-simple-toast';
 
 const OrdersSummary = ({navigation, route}) => {
   const uid = auth()?.currentUser?.uid;
+  const dispatch = useDispatch();
   const {item} = route.params;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [productCount, setProductCount] = useState(1);
 
-  const incrementProductCount = () =>
-    setProductCount(prevCount => prevCount + 1);
-  const decrementProductCount = () =>
-    setProductCount(prevCount => prevCount - 1);
-
-  const totalPrice = item => {
-    let price = item?.price - item?.price * (item?.discountPercentage / 100);
-    let total = price * productCount + 5;
-    return total.toFixed(2);
+  const storeOrder = async order => {
+    try {
+      let idx1 = order?.uid;
+      let idx2 = order?.orderId;
+      const res = await database()
+        .ref(`orders/${idx1}/${idx2}`)
+        .set({order})
+        .then(() => {
+          console.log('Order added to database!');
+          dispatch(removeProduct(item));
+          navigation.navigate('HomeScreen');
+          Toast.show('Order placed successfully!', Toast.LONG);
+        });
+    } catch (err) {
+      console.log('Error in storing order : ', err?.message);
+      Alert.alert('Error', 'Something went wrong while storing order!');
+    }
   };
-
-  console.log('ORDER SUM ITM :- ', item);
 
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
@@ -69,17 +75,6 @@ const OrdersSummary = ({navigation, route}) => {
                   <Text style={styles.brandNameStyle}>
                     {item?.brand ? item?.brand : '--'}
                   </Text>
-                </View>
-                <View
-                  style={{
-                    width: '60%',
-                  }}>
-                  {/* <ProductCounter
-                    customStyle={{width: '100%'}}
-                    productCount={productCount}
-                    incrementProductCount={incrementProductCount}
-                    decrementProductCount={decrementProductCount}
-                  /> */}
                 </View>
               </View>
             </View>
@@ -132,10 +127,9 @@ const OrdersSummary = ({navigation, route}) => {
               </View>
             </View>
             <AppButton
-              title="Buy"
+              title="Place Order"
               onPress={() => {
-                navigation.navigate('HomeScreen');
-                Toast.show('Order placed successfully!', Toast.LONG);
+                storeOrder(item);
               }}
             />
           </View>
@@ -196,11 +190,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: COLORS.black200,
     fontSize: FONTS.normalFontSize,
-  },
-  priceTextStyle: {
-    marginBottom: 10,
-    fontSize: FONTS.xlargeFontSize,
-    fontWeight: 'bold',
   },
   billContainerStyle: {
     margin: 5,

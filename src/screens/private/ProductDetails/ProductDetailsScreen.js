@@ -52,7 +52,6 @@ const ProductDetailsScreen = ({route, navigation}) => {
   };
 
   const addToCart = product => {
-    // let orderId = myCart.length + 1;
     let orderId = generateOrderId();
     let productToAdd = {
       ...product,
@@ -92,7 +91,6 @@ const ProductDetailsScreen = ({route, navigation}) => {
           <AppButton
             title="ADD TO CART"
             onPress={() => {
-              // setIsAddToCart(true);
               addToCart(productData);
             }}
             customButtonStyle={{marginHorizontal: 0}}

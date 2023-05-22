@@ -98,16 +98,6 @@ const EditProfile = ({navigation}) => {
     currUser
       .reauthenticateWithCredential(creds)
       .then(() => {
-        // //Update email
-        // currUser
-        //   .updateEmail(inputs.email)
-        //   .then(() => {
-        //     console.log('Email updated successfully!');
-        //   })
-        //   .catch(err => {
-        //     console.log('Error updating email', err);
-        //   });
-
         //Update password
         currUser
           .updatePassword(inputs.newPasswordInput)

@@ -45,37 +45,6 @@ const HomeScreen = ({navigation, onSignOut}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [sortBy, setSortBy] = useState(null);
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   setTimeout(() => {
-  //     getUserToken();
-  //   }, 1000);
-  //   dispatch(fetchAllProducts());
-  //   dispatch(fetchProductCategories());
-  // }, []);
-
-  // useEffect(() => {
-  //   if (reducerData?.allProducts?.allProducts?.products) {
-  //     setAllProducts(reducerData?.allProducts?.allProducts?.products);
-  //     setProductData(reducerData?.allProducts?.allProducts?.products);
-  //   }
-  //   if (reducerData?.productCategory?.category) {
-  //     setProductCategory(reducerData?.productCategory?.category);
-  //   }
-  //   setIsLoading(false);
-  // }, [reducerData]);
-
-  // useEffect(() => {
-  //   if (reducerData?.productByCategory?.productByCategory) {
-  //     setProductByCategory(reducerData?.productByCategory?.productByCategory);
-  //     if (isCategorySelected) {
-  //       setProductData(reducerData?.productByCategory?.productByCategory);
-  //     } else {
-  //       setProductData(reducerData?.allProducts?.allProducts?.products);
-  //     }
-  //   }
-  // }, [reducerData?.productByCategory]);
-
   useFocusEffect(
     useCallback(() => {
       setIsLoading(true);
@@ -209,8 +178,6 @@ const HomeScreen = ({navigation, onSignOut}) => {
     );
   };
 
-  const stopLoading = () => setIsLoading(false);
-
   return (
     <SafeAreaView style={GLOBAL_STYLES.containerStyle}>
       <View style={GLOBAL_STYLES.containerStyle}>
@@ -239,18 +206,7 @@ const HomeScreen = ({navigation, onSignOut}) => {
               />
             </View>
             <View style={styles.containerStyle}>
-              {productData ? (
-                <AllProductList data={productData} stopLoading={stopLoading} />
-              ) : null}
-
-              {/* <Button
-            title="Sign Out"
-            onPress={async () => {
-              await Keychain.resetGenericPassword();
-              await auth().signOut();
-              onSignOut();
-            }}
-          /> */}
+              {productData ? <AllProductList data={productData} /> : null}
             </View>
           </>
         </TouchableWithoutFeedback>
@@ -321,7 +277,6 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
-    // padding: 10,
     overflow: 'hidden',
   },
   toolbarStyles: {

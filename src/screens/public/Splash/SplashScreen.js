@@ -27,7 +27,6 @@ const SplashScreen = ({
   return (
     <SafeAreaView style={GLOBAL_STYLES.rootContainerStyle}>
       <View style={GLOBAL_STYLES.rootContainerStyle}>
-        {/* <Text style={GLOBAL_STYLES.headingStyle}>Splash Screen!</Text> */}
         <View
           style={{
             width: 200,
@@ -35,10 +34,6 @@ const SplashScreen = ({
             borderRadius: 100,
             overflow: 'hidden',
           }}>
-          {/* <Image
-            source={require('../../../assets/images/splash.png')}
-            style={{width: 200, height: 200}}
-          /> */}
           <Lottie
             source={require('../../../assets/animations/splash.json')}
             autoPlay

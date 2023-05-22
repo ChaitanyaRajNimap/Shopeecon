@@ -3,11 +3,10 @@ import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import ProductHorizontalCard from '../../../components/ProductHorizontalCard';
 
-const AllProductList = ({data, stopLoading}) => {
+const AllProductList = ({data}) => {
   const renderItem = ({item}) => {
     return <ProductHorizontalCard data={item} />;
   };
-  // stopLoading();
   return (
     <View>
       {data.length > 0 ? (

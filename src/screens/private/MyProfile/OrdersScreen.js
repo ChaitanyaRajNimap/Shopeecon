@@ -36,7 +36,6 @@ const OrdersScreen = () => {
   }, [reducerData]);
 
   const renderItem = ({item}) => {
-    // console.log('ITEMMMM ', item?.order);
     return (
       <View style={styles.orderCardContainer}>
         <View style={{width: '35%'}}>
@@ -148,7 +147,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   titleStyle: {
-    // marginBottom: 5,
     color: COLORS.black200,
     fontSize: FONTS.largeBold,
     fontWeight: 'bold',

@@ -84,16 +84,6 @@ const HomeTabs = ({onSignOut}) => {
 const AppNavigation = ({onSignOut}) => {
   return (
     <Stack.Navigator>
-      {/* <Stack.Screen
-        name="Home"
-        options={{headerShown: false, animationTypeForReplace: 'pop'}}>
-        {props => <HomeScreen {...props} onSignOut={onSignOut} />}
-      </Stack.Screen> */}
-      {/* <Stack.Screen
-        name="Home"
-        component={HomeTabs}
-        options={{headerShown: false, animationTypeForReplace: 'pop'}}
-      /> */}
       <Stack.Screen
         name="Home"
         options={{headerShown: false, animationTypeForReplace: 'pop'}}>
