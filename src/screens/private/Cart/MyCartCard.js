@@ -46,11 +46,14 @@ const MyCartCard = ({item}) => {
         .then(() => {
           console.log('Order added to database!');
           dispatch(removeProduct(item));
-          navigation.navigate('HomeScreen');
+          // navigation.navigate('HomeScreen');
+          navigation.navigate('OrdersSummary', {
+            item: order,
+          });
           // removeItemFromCart(item?.cartItem);
           // removeItemFromCart(item);
           // dispatch(addOrder(order));
-          Toast.show('Order placed successfully!', Toast.LONG);
+          // Toast.show('Order placed successfully!', Toast.LONG);
         });
     } catch (err) {
       console.log('Error in storing order : ', err?.message);
@@ -172,7 +175,7 @@ const MyCartCard = ({item}) => {
 
       {isItemActive ? (
         <>
-          <View>
+          {/* <View>
             <View
               style={[
                 GLOBAL_STYLES.containerStyle,
@@ -211,7 +214,7 @@ const MyCartCard = ({item}) => {
               <Text style={styles.billLableStyle}>Total : </Text>
               <Text style={styles.billNumberStyle}>${totalPrice(item)}</Text>
             </View>
-          </View>
+          </View> */}
 
           <View
             style={{
@@ -241,7 +244,7 @@ const MyCartCard = ({item}) => {
               }}
             />
             <AppButton
-              title="Buy"
+              title="Continue"
               onPress={() => {
                 // setIsItemActive(false);
                 setIsItemActive(true);
