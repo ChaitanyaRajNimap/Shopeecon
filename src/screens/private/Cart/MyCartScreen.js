@@ -10,6 +10,7 @@ import {
 import {GLOBAL_STYLES, COLORS, FONTS} from '../../../constants/Theme';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import {fetchMyCart} from '../../../redux/features/addToCart/addToCartSlice';
 import AppHeader from '../../../components/AppHeader';
@@ -20,23 +21,42 @@ import database from '@react-native-firebase/database';
 const MyCartScreen = ({route, navigation}) => {
   const uid = auth()?.currentUser?.uid;
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const reducerData = useSelector(state => state?.addToCart?.myCart);
 
   const [myCart, setMyCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    dispatch(fetchMyCart(uid));
-  }, []);
+  // useEffect(() => {
+  //   // setIsLoading(true);
+  //   // dispatch(fetchMyCart(uid));
+  //   // refreshCart();
+  // }, []);
 
   useEffect(() => {
     if (reducerData) {
       setMyCart(Object.values(reducerData));
     }
     setIsLoading(false);
-    refreshCart();
+    // refreshCart();
   }, [reducerData]);
+
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     setIsLoading(true);
+  //     dispatch(fetchMyCart(uid));
+  //   }
+  // }, [isFocused]);
+
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     if (reducerData) {
+  //       setMyCart(Object.values(reducerData));
+  //     }
+  //     refreshCart();
+  //     setIsLoading(false);
+  //   }
+  // }, [isFocused, reducerData]);
 
   // useFocusEffect(
   //   useCallback(() => {
@@ -62,6 +82,7 @@ const MyCartScreen = ({route, navigation}) => {
         if (snapshot.val()) {
           console.log('called!');
           setMyCart(Object.values(snapshot.val()));
+          setIsLoading(false);
         }
       });
   };

@@ -8,6 +8,7 @@ const initialState = {
 };
 
 export const fetchMyCart = createAsyncThunk('myCart/fetchMyCart', async uid => {
+  console.log('fetchMyCart REACHED!');
   try {
     const res = await database().ref(`mycart/${uid}`).once('value');
     if (res.val()) {

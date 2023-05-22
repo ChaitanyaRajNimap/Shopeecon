@@ -60,11 +60,11 @@ const ProductDetailsScreen = ({route, navigation}) => {
       orderId: orderId,
     };
     console.log('ADD TO CART PRODUCT : ', productToAdd);
-    addCartToDatabase(productToAdd);
-    // dispatch(addProduct(productToAdd));
-    // console.log('Product added to cart successfully!');
-    // Alert.alert('', 'Product added to cart successfully!');
-    // navigation.navigate('Home');
+    // addCartToDatabase(productToAdd);
+    dispatch(addProduct(productToAdd));
+    console.log('Cart item added to database!');
+    navigation.navigate('MyCart');
+    Toast.show('Product added to cart successfully!', Toast.LONG);
   };
 
   return (

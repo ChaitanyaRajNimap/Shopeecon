@@ -45,8 +45,10 @@ const MyCartCard = ({item}) => {
         .set({order})
         .then(() => {
           console.log('Order added to database!');
-          removeItemFromCart(item?.cartItem);
-          // dispatch(removeProduct(item?.cartItem));
+          dispatch(removeProduct(item));
+          navigation.navigate('HomeScreen');
+          // removeItemFromCart(item?.cartItem);
+          // removeItemFromCart(item);
           // dispatch(addOrder(order));
           Toast.show('Order placed successfully!', Toast.LONG);
         });
@@ -84,6 +86,12 @@ const MyCartCard = ({item}) => {
     try {
       let idx1 = cartItem?.uid;
       let idx2 = cartItem?.orderId;
+      let idx = {
+        idx1: cartItem?.uid,
+        idx2: cartItem?.orderId,
+      };
+      console.log('B4 idx : ', idx);
+      // dispatch(removeCartItem(idx));
       const res = await database()
         .ref(`mycart/${idx1}/${idx2}`)
         .remove()
@@ -122,9 +130,9 @@ const MyCartCard = ({item}) => {
         }>
         <>
           <View style={{width: '35%'}}>
-            {item?.cartItem?.images?.[1] ? (
+            {item?.images?.[1] ? (
               <Image
-                source={{uri: `${item?.cartItem?.images?.[1]}`}}
+                source={{uri: `${item?.images?.[1]}`}}
                 style={styles.imageStyle}
               />
             ) : (
@@ -138,10 +146,10 @@ const MyCartCard = ({item}) => {
           <View style={{width: '65%'}}>
             <View>
               <Text style={styles.titleStyle}>
-                {item?.cartItem?.title ? item?.cartItem?.title : '--'}
+                {item?.title ? item?.title : '--'}
               </Text>
               <Text style={styles.brandNameStyle}>
-                {item?.cartItem?.brand ? item?.cartItem?.brand : '--'}
+                {item?.brand ? item?.brand : '--'}
               </Text>
             </View>
             <View
@@ -177,7 +185,7 @@ const MyCartCard = ({item}) => {
               <View style={styles.billContainerStyle}>
                 <Text style={styles.billLableStyle}>Subtotal : </Text>
                 <Text style={styles.billNumberStyle}>
-                  ${item?.cartItem?.price * productCount}
+                  ${item?.price * productCount}
                 </Text>
               </View>
               <View style={styles.billContainerStyle}>
@@ -187,7 +195,7 @@ const MyCartCard = ({item}) => {
               <View style={styles.billContainerStyle}>
                 <Text style={styles.billLableStyle}>Discount : </Text>
                 <Text style={styles.billNumberStyle}>
-                  {item?.cartItem?.discountPercentage}%
+                  {item?.discountPercentage}%
                 </Text>
               </View>
             </View>
@@ -201,9 +209,7 @@ const MyCartCard = ({item}) => {
                 },
               ]}>
               <Text style={styles.billLableStyle}>Total : </Text>
-              <Text style={styles.billNumberStyle}>
-                ${totalPrice(item?.cartItem)}
-              </Text>
+              <Text style={styles.billNumberStyle}>${totalPrice(item)}</Text>
             </View>
           </View>
 
@@ -218,8 +224,14 @@ const MyCartCard = ({item}) => {
               onPress={() => {
                 // setIsItemActive(false);
                 setIsItemActive(true);
-                // dispatch(removeProduct(item?.cartItem));
-                removeItemFromCart(item?.cartItem);
+                dispatch(removeProduct(item));
+                navigation.navigate('HomeScreen');
+                console.log('Cart item removed!');
+                Toast.show(
+                  'Product removed from cart successfully!',
+                  Toast.LONG,
+                );
+                // removeItemFromCart(item);
               }}
               customButtonStyle={{
                 width: '45%',
@@ -233,7 +245,7 @@ const MyCartCard = ({item}) => {
               onPress={() => {
                 // setIsItemActive(false);
                 setIsItemActive(true);
-                createOrder(item?.cartItem);
+                createOrder(item);
               }}
               customButtonStyle={{
                 width: '45%',

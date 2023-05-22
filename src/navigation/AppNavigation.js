@@ -7,6 +7,7 @@ import MyCartScreen from '../screens/private/Cart/MyCartScreen';
 import MyProfileScreen from '../screens/private/MyProfile/MyProfileScreen';
 import OrdersScreen from '../screens/private/MyProfile/OrdersScreen';
 import EditProfile from '../screens/private/MyProfile/EditProfile';
+import OrdersSummary from '../screens/private/Orders/OrdersSummary';
 import {Image} from 'react-native';
 import {COLORS} from '../constants/Theme';
 
@@ -56,25 +57,6 @@ const HomeTabs = ({onSignOut}) => {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="MyProfile"
-        component={MyProfileScreen}
-        options={{
-          headerShown: false,
-          tabBarActiveTintColor: COLORS.green200,
-          tabBarInactiveTintColor: COLORS.gray300,
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={
-                focused
-                  ? require('../assets/images/settings-green.png')
-                  : require('../assets/images/settings-gray.png')
-              }
-              style={{width: 25, height: 25}}
-            />
-          ),
-        }}
-      /> */}
       <Tab.Screen
         name="MyProfile"
         options={{
@@ -122,11 +104,6 @@ const AppNavigation = ({onSignOut}) => {
         component={ProductDetailsScreen}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen
-        name="MyCart"
-        component={MyCartScreen}
-        options={{headerShown: false}}
-      /> */}
       <Stack.Screen
         name="OrdersScreen"
         component={OrdersScreen}
@@ -135,6 +112,11 @@ const AppNavigation = ({onSignOut}) => {
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OrdersSummary"
+        component={OrdersSummary}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
